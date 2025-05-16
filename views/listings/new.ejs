@@ -1,30 +1,16 @@
 <%- layout("/layouts/boilerplate") %>
-  <body>
+
+<body>
+ <div class="new-location">
+   <form class="listing-card" method="POST" action="/listings">
     <h3>Create a New Listing</h3>
-    <form method="POST" action="/listings">
-      <input name="listing[title]" placeholder="enter title" type="text" />
-      <br /><br />
-      <textarea
-        name="listing[description]"
-        placeholder="enter description"
-      ></textarea>
-      <br /><br />
-      <input
-        name="listing[image]"
-        placeholder="enter image URL/Link"
-        type="text"
-      />
-      <br /><br />
-      <input name="listing[price]" placeholder="enter price" type="number" />
-      <br /><br />
-      <input name="listing[country]" placeholder="enter country" type="text" />
-      <br /><br />
-      <input
-        name="listing[location]"
-        placeholder="enter location"
-        type="text"
-      />
-      <br /><br />
-      <button>Add</button>
-    </form>
-  </body>
+    <input name="listing[title]" placeholder="Enter title" type="text" />
+    <textarea name="listing[description]" placeholder="Enter description"></textarea>
+    <input name="listing[image]" placeholder="Enter image URL/Link" type="text" />
+    <input name="listing[price]" placeholder="Enter price" type="number" />
+    <input name="listing[country]" placeholder="Enter country" type="text" />
+    <input name="listing[location]" placeholder="Enter location" type="text" />
+    <button type="submit">Add Listing</button>
+  </form>
+ </div>
+</body>
