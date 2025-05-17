@@ -25,7 +25,10 @@
                   <h5 class="card-title fw-semibold mb-0"><%= listing.title %></h5>
                   <span class="badge bg-danger rounded-pill"><%= listing.country %></span>
                 </div>
-                <p class="card-text text-muted mb-1">&#8377; <%= listing.price.toLocaleString("en-IN") %> / night</p>
+                <p class="card-text text-muted mb-1">
+  &#8377; <%= listing.price ? listing.price.toLocaleString("en-IN") : "N/A" %> / night
+</p>
+
                 <p class="card-text small text-muted"><%= listing.location %></p>
               </div>
             </a>

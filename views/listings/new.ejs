@@ -1,16 +1,68 @@
 <%- layout("/layouts/boilerplate") %>
 
 <body>
- <div class="new-location">
-   <form class="listing-card" method="POST" action="/listings">
-    <h3>Create a New Listing</h3>
-    <input name="listing[title]" placeholder="Enter title" type="text" />
-    <textarea name="listing[description]" placeholder="Enter description"></textarea>
-    <input name="listing[image]" placeholder="Enter image URL/Link" type="text" />
-    <input name="listing[price]" placeholder="Enter price" type="number" />
-    <input name="listing[country]" placeholder="Enter country" type="text" />
-    <input name="listing[location]" placeholder="Enter location" type="text" />
-    <button type="submit">Add Listing</button>
-  </form>
- </div>
+  <div class="new-location">
+    <form class="listing-card needs-validation" method="POST" action="/listings" novalidate>
+      <h3>Create a New Listing</h3>
+
+      <div class="mb-3">
+        <input name="listing[title]" placeholder="Enter title" type="text" class="form-control" required />
+        <div class="invalid-feedback">Title is required.</div>
+        <div class="valid-feedback">Title looks good !</div>
+      
+      </div>
+
+      <div class="mb-3">
+        <textarea name="listing[description]" placeholder="Enter description" class="form-control"></textarea>
+                <div class="invalid-feedback">Please Enter a short description!</div>
+
+      </div>
+
+      <div class="mb-3">
+        <input name="listing[image]" placeholder="Enter image URL/Link" type="text" class="form-control" />
+                <div class="invalid-feedback">Paste Valid links!</div>
+
+      </div>
+
+      <div class="mb-3">
+        <input name="listing[price]" placeholder="Enter price" type="number" class="form-control" required />
+        <div class="invalid-feedback">Price is required.</div>
+                <div class="valid-feedback">Price looks good !</div>
+                        <div class="invalid-feedback">invalid price !</div>
+
+      </div>
+
+      <div class="mb-3">
+        <input name="listing[country]" placeholder="Enter country" type="text" class="form-control" />
+      </div>
+
+      <div class="mb-3">
+        <input name="listing[location]" placeholder="Enter location" type="text" class="form-control" />
+      </div>
+
+      <button type="submit" class="btn btn-primary">Add Listing</button>
+    </form>
+  </div>
+  <!-- javascrtipt  -->
+   <script>
+  (() => {
+    "use strict";
+    const forms = document.querySelectorAll(".needs-validation");
+
+    Array.from(forms).forEach((form) => {
+      form.addEventListener(
+        "submit",
+        (event) => {
+          if (!form.checkValidity()) {
+            event.preventDefault();
+            event.stopPropagation();
+          }
+          form.classList.add("was-validated");
+        },
+        false
+      );
+    });
+  })();
+</script>
+
 </body>
