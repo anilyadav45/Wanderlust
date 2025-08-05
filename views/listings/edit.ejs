@@ -9,7 +9,7 @@
 
       <textarea name="listing[description]" placeholder="Description"><%= listing.description %></textarea>
 
-      <input name="listing[image]" value="<%= listing.image %>" type="text" placeholder="Image URL" />
+      <input name="listing[image][url]" value="<%= listing.image.url%>" type="text" placeholder="Image URL" />
 
       <input name="listing[price]" value="<%= listing.price %>" type="number" placeholder="Price" />
 

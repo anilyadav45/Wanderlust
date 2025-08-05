@@ -1,3 +1,4 @@
+const { required } = require("joi");
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
@@ -8,17 +9,27 @@ const listingSchema = new Schema({
   },
   description: String,
   image: {
-    filename: String,
-    url: String
-
+    filename: {
+      type: String,
+      default: 'no-image.png',
+    },
+    url: {
+      type: String,
+      required: true,
+      default: 'https://upload.wikimedia.org/wikipedia/commons/a/ac/No_image_available.svg'
+    }
   },
-  price: Number,
+  price: {
+    type: Number,
+    required: true,
+    default: 0
+  },
   location: String,
   country: String,
   // each listing can have multiple reviews i.e one to many relationship from listing to reviews model
-  reviews : [{
-    type : Schema.Types.ObjectId,
-    ref : "Review"
+  reviews: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Review"
   }]
 });
 

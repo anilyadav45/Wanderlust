@@ -1,23 +1,32 @@
 <%- layout("/layouts/boilerplate") %>
 
-<body>
- <div class="show-container">
-   <div class="listing-container">
-    <% if (listing.image && listing.image.url) { %>
-      <img src="<%= listing.image.url %>" alt="<%= listing.title %>" />
-    <% } %>
+  <body>
+    <div class="show-container">
+      <div class="listing-container">
+        <% if (listing.image && listing.image.url) { %>
+          <img src="<%= listing.image.url %>" alt="<%= listing.title %>" />
+          <% } %>
 
-    <div class="listing-title"><%= listing.title %></div>
-    <div class="listing-description"><%= listing.description %></div>
-    <div class="listing-price">&#8377; <%= listing.price.toLocaleString("en-IN") %></div>
-    <div class="listing-location"><%= listing.location %>, <%= listing.country %></div>
+            <div class="listing-title">
+              <%= listing.title %>
+            </div>
+            <div class="listing-description">
+              <%= listing.description %>
+            </div>
 
-    <div class="listing-actions">
-      <a href="/listings/<%= listing._id %>/edit">Edit this Listing</a>
-      <form method="POST" action="/listings/<%=listing._id%>?_method=DELETE">
-        <button>Delete this listing</button>
-      </form>
+            <div class="listing-price">
+              &#8377; <%= listing.price ? listing.price.toLocaleString("en-IN") : "0" %>
+            </div>
+            <div class="listing-location">
+              <%= listing.location %>, <%= listing.country %>
+            </div>
+
+            <div class="listing-actions">
+              <a href="/listings/<%= listing._id %>/edit">Edit this Listing</a>
+              <form method="POST" action="/listings/<%=listing._id%>?_method=DELETE">
+                <button>Delete this listing</button>
+              </form>
+            </div>
+      </div>
     </div>
-  </div>
- </div>
-</body>
+  </body>
