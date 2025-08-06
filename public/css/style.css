@@ -167,6 +167,7 @@
     justify-content: center;
     margin-top: 1rem;
   }
+  
 
   /* -------edit route styling ------  */
   /* public/styles/edit.css */
@@ -219,3 +220,5 @@
 .edit-form button:hover {
   background-color: #e41e45;
 }
+
+
