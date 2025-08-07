@@ -2,7 +2,9 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 const reviewSchema = new Schema({
-    comment: string,
+    comment: {
+        type: String,
+    },
     rating: {
         type: Number,
         min: 1,
@@ -13,5 +15,5 @@ const reviewSchema = new Schema({
         default: Date.now()
     }
 })
-const Review = mongoose.model("Review",reviewSchema);
-module.exports = Listing;
+const Review = mongoose.model("Review", reviewSchema);
+module.exports = Review;

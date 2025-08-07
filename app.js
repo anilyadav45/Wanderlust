@@ -9,6 +9,7 @@ const MONGO_URL = "mongodb://127.0.0.1:27017/wanderlust";
 app.engine('ejs', engine);
 const wrapAsync = require("./utils/wrapAsync.js");
 const {listingSchema} = require("./schema.js");
+const Review = require("./models/review.js");
 
 main()
   .then(() => {
@@ -83,6 +84,18 @@ app.delete("/listings/:id", async (req, res) => {
   let deletedListing = await Listing.findByIdAndDelete(id);
   console.log(deletedListing);
   res.redirect("/listings");
+});
+
+//review post route within listing 
+app.post("/listings/:id/reviews", async(req,res)=>{
+  let {id} = req.params;
+  const listing =  await Listing.findById(id);
+  const newReview = new Review(req.body.review);
+  listing.reviews.push(newReview);//since each listing have array of reviews so we ca push new review to listing
+  await newReview.save(); // save the new review to the database
+  await listing.save();
+  console.log(newReview);
+  res.send("Review submitted ");
 });
 
 // app.get("/testListing", async (req, res) => {
