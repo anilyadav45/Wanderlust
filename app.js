@@ -1,14 +1,16 @@
 const express = require("express");
+const router = express.Router();
+const ExpressError = require("./utils/ExpressError.js");
 const app = express();
 const mongoose = require("mongoose");
 const Listing = require("./models/listing.js");
 const path = require("path");
 const methodOverride = require("method-override");
-const   engine = require('ejs-mate') ;
+const engine = require('ejs-mate');
 const MONGO_URL = "mongodb://127.0.0.1:27017/wanderlust";
 app.engine('ejs', engine);
 const wrapAsync = require("./utils/wrapAsync.js");
-const {listingSchema} = require("./schema.js");
+const { listingSchema, reviewSchema } = require("./schema.js");
 const Review = require("./models/review.js");
 
 main()
@@ -28,12 +30,32 @@ app.set("views", path.join(__dirname, "views"));
 app.use(express.urlencoded({ extended: true }));
 app.use(methodOverride("_method"));
 
-app.use(express.static(path.join(__dirname,"public")));
+app.use(express.static(path.join(__dirname, "public")));
 
 app.get("/", (req, res) => {
   res.send("Hi, I am root");
 });
+//validatelisting middleware  for server side form validation
+const validateListing = (req, res, next) => {
+  let { error } = listingSchema.validate(req.body);
+  if (error) {
+    let errMsg = error.details.map((el) => el.message).join(",");
+    throw new ExpressError(errMsg,400);
+  } else {
+    next();
+  }
+};
 
+//validateReview middleware  for server side form validation
+const validateReview = (req, res, next) => {
+  let { error } = reviewSchema.validate(req.body);
+  if (error) {
+    let errMsg = error.details.map((el) => el.message).join(",");
+    throw new ExpressError(errMsg,400);
+  } else {
+    next();
+  }
+};
 //Index Route
 app.get("/listings", async (req, res) => {
   const allListings = await Listing.find({});
@@ -53,7 +75,7 @@ app.get("/listings/:id", async (req, res) => {
 });
 
 //Create Route
-app.post("/listings", wrapAsync(async (req, res, next) => {
+app.post("/listings", validateListing, wrapAsync(async (req, res, next) => {
   try {
     const newListing = new Listing(req.body.listing);
     await newListing.save();
@@ -87,16 +109,16 @@ app.delete("/listings/:id", async (req, res) => {
 });
 
 //review post route within listing 
-app.post("/listings/:id/reviews", async(req,res)=>{
-  let {id} = req.params;
-  const listing =  await Listing.findById(id);
+app.post("/listings/:id/reviews",validateReview, wrapAsync(async (req, res) => {
+  let { id } = req.params;
+  const listing = await Listing.findById(id);
   const newReview = new Review(req.body.review);
   listing.reviews.push(newReview);//since each listing have array of reviews so we ca push new review to listing
   await newReview.save(); // save the new review to the database
   await listing.save();
   console.log(newReview);
   res.send("Review submitted ");
-});
+}));
 
 // app.get("/testListing", async (req, res) => {
 //   let sampleListing = new Listing({

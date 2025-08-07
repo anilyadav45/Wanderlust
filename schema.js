@@ -1,6 +1,6 @@
-// schemas.js
+// schemas.js  -- this is for server side validation usnig joi
 const Joi = require("joi");
-
+//for listingschema validation
 const listingSchema = Joi.object({
     listing: Joi.object({
         title: Joi.string().required().min(3).max(100),
@@ -12,4 +12,16 @@ const listingSchema = Joi.object({
     }).required(),
 });
 
-module.exports = listingSchema;
+//for reviewschema validation
+const reviewSchema = Joi.object({
+    review: Joi.object({
+        rating: Joi.number().required().min(1),
+        comment: Joi.string().required().max(100),
+
+    }).required(),
+});
+
+module.exports = {
+    listingSchema,
+    reviewSchema,
+};
