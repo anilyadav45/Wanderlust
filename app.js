@@ -117,7 +117,7 @@ app.post("/listings/:id/reviews",validateReview, wrapAsync(async (req, res) => {
   await newReview.save(); // save the new review to the database
   await listing.save();
   console.log(newReview);
-  res.send("Review submitted ");
+  res.redirect(`/listings/${id}`);;
 }));
 
 // app.get("/testListing", async (req, res) => {
