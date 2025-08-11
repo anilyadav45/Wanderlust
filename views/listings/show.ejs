@@ -73,6 +73,9 @@
                     <p class="card-text">
                       <%= review.comment %>
                     </p>
+                    <form method="POST" action="/listings/<%=listing.id  %>/reviews/<%= review._id %>?_method=DELETE">
+                      <button class="btn btn-danger" type="submit">Delete</button>
+                    </form>
                   </div>
                 </div>
 
