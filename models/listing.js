@@ -1,6 +1,7 @@
 const { required } = require("joi");
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
+const Review = require("./review");
 
 const listingSchema = new Schema({
   title: {
@@ -33,5 +34,12 @@ const listingSchema = new Schema({
   }]
 });
 
+//post middleware to remove reviews when a listing is deleted
+listingSchema.post("findOneAndDelete", async function (listing) {
+  if (listing) {
+    await Review.deleteMany({ _id: { $in: listing.reviews } });
+  }
+
+})
 const Listing = mongoose.model("Listing", listingSchema);
 module.exports = Listing;
