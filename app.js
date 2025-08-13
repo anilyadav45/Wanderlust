@@ -1,17 +1,14 @@
 const express = require("express");
-const router = express.Router();
 const app = express();
 const mongoose = require("mongoose");
-const Listing = require("./models/listing.js");
 const path = require("path");
 const methodOverride = require("method-override");
 const engine = require('ejs-mate');
 const MONGO_URL = "mongodb://127.0.0.1:27017/wanderlust";
 app.engine('ejs', engine);
-const wrapAsync = require("./utils/wrapAsync.js");
-const { listingSchema, reviewSchema } = require("./schema.js");
-const Review = require("./models/review.js");
+//importing routes
 const listings = require("./routes/listing.js");
+const reviews = require("./routes/review.js");
 
 main()
   .then(() => {
@@ -37,39 +34,15 @@ app.get("/", (req, res) => {
 });
 
 
-//validateReview middleware  for server side form validation
-const validateReview = (req, res, next) => {
-  let { error } = reviewSchema.validate(req.body);
-  if (error) {
-    let errMsg = error.details.map((el) => el.message).join(",");
-    throw new ExpressError(errMsg, 400);
-  } else {
-    next();
-  }
-};
-
+//here we use the routes we imported 
 app.use("/listings", listings);
-//review post route within listing 
-app.post("/listings/:id/reviews", validateReview, wrapAsync(async (req, res) => {
-  let { id } = req.params;
-  const listing = await Listing.findById(id);
-  const newReview = new Review(req.body.review);
-  listing.reviews.push(newReview);//since each listing have array of reviews so we ca push new review to listing
-  await newReview.save(); // save the new review to the database
-  await listing.save();
-  console.log(newReview);
-  res.redirect(`/listings/${id}`);;
-}));
-
-//review delete route within listing
-app.delete("/listings/:id/reviews/:reviewId", wrapAsync(async (req, res) => {
-  let { id, reviewId } = req.params;
-  await Listing.findByIdAndUpdate(id, { $pull: { reviews: reviewId } });
-  await Listing.findByIdAndDelete(reviewId);
-  res.redirect(`/listings/${id}`);
-}))
+app.use("/listings/:id/reviews", reviews);//like wise we make many indivisual routes like listings and reviews where related routes are grouped together and we can use them in app.js
+//we use common part of the route here after that all present in indivisual routes
 
 
 app.listen(8080, () => {
   console.log("server is listening to port 8080");
 });
+
+
+//now we can see  how good the code is organized and how we can use indivisual routes in app.js using express.Router() and how we can use middleware to validate the data before saving it to the database. previous code while holding all routes it was around 200-300 LOC now only 50 so it is very easy to read and maintain the code.
