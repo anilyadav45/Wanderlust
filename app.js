@@ -45,4 +45,4 @@ app.listen(8080, () => {
 });
 
 
-//now we can see  how good the code is organized and how we can use indivisual routes in app.js using express.Router() and how we can use middleware to validate the data before saving it to the database. previous code while holding all routes it was around 200-300 LOC now only 50 so it is very easy to read and maintain the code.
+//now we can see  how good the code is organized and how we can use indivisual routes in app.js using express.Router() and how we can use middleware to validate the data before saving it to the database. previous code while holding all routes it was around 200-300 LOC now only 50 so it is very easy to read and maintain the code.here we can add more routes like users, bookings etc. and we can use them in app.js like we did for listings and reviews.
