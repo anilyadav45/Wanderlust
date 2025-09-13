@@ -9,6 +9,32 @@ app.engine('ejs', engine);
 //importing routes
 const listings = require("./routes/listing.js");
 const reviews = require("./routes/review.js");
+//sesssion require
+const session = require('express-session');
+const connectFlash = require('connect-flash');
+
+const sessionOptions = {
+  secret: 'keyboard cat',
+  resave: false,
+  saveUninitialized: true,
+  cookie: {
+    expiryDate: new Date() + 60 * 1000 * 30, //30 minutes
+    maxAge: 1000 * 60 * 30, //30 minutes
+    httpOnly: true
+  }
+}
+//using session middleware
+app.use(session(sessionOptions));
+//always use flash after session 
+app.use(connectFlash());
+//flash middleware 
+app.use((req, res, next) => {
+  res.locals.sucess = req.flash("sucess");
+  res.locals.error = req.flash("error");
+  next();//to not get stuck in middleware
+})
+
+
 
 main()
   .then(() => {
