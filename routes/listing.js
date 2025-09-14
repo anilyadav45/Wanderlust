@@ -19,10 +19,23 @@ const validateListing = (req, res, next) => {
 };
 
 //routes -- instead of app now we use router
+
+
 //INdex route
 router.get("/", async (req, res) => {
-    const allListings = await Listing.find({});
-    res.render("listings/index.ejs", { allListings });
+    try {
+        const allListings = await Listing.find({});
+        res.render("listings/index.ejs", { allListings });
+    } catch (err) {
+        res.redirect("/error");
+    }
+});
+//test flash
+router.get("/test-flash", async(req, res) => {
+    await req.flash("success", "Success works!");
+    await req.flash("deleted", "Deleted works!");
+    await req.flash("error", "Error works!");
+    res.redirect("/listings");
 });
 
 //New Route
@@ -42,7 +55,7 @@ router.post("/", validateListing, wrapAsync(async (req, res, next) => {
     try {
         const newListing = new Listing(req.body.listing);
         await newListing.save();
-        req.flash("success","Succesfully made a new listing"); // after save new listing it display flash one time 
+        req.flash("success", "Succesfully made a new listing"); // after save new listing it display flash one time 
         res.redirect("/listings");
     } catch (err) {
         next(err); // Passes the error to the error handling middleware
@@ -61,7 +74,7 @@ router.get("/:id/edit", async (req, res) => {
 router.put("/:id", async (req, res) => {
     let { id } = req.params;
     await Listing.findByIdAndUpdate(id, { ...req.body.listing });
-    req.flash("success","Listing updated successfully");
+    req.flash("success", "Listing updated successfully");
     res.redirect(`/listings/${id}`);
 });
 
@@ -70,8 +83,12 @@ router.delete("/:id", async (req, res) => {
     let { id } = req.params;
     let deletedListing = await Listing.findByIdAndDelete(id);
     console.log(deletedListing);
-    req.flash("success","Succesfully deleted a listing");
+    if (!deletedListing) {
+        req.flash("error", "Cannot Find that Listing");
+        return res.redirect("/listings");
+    }
+    req.flash("deleted", "Succesfully deleted a listing");
     res.redirect("/listings");
 });
 
-module.exports  =  router; // exporting router 
+module.exports = router; // exporting router 

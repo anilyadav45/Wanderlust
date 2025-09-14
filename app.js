@@ -27,12 +27,14 @@ const sessionOptions = {
 app.use(session(sessionOptions));
 //always use flash after session 
 app.use(connectFlash());
-//flash middleware 
+//flash middleware creating like success ,error,etc and we can use it in all ejs files
 app.use((req, res, next) => {
-  res.locals.success = req.flash("success");
-  res.locals.error = req.flash("error");
-  next();//to not get stuck in middleware
-})
+    res.locals.success = req.flash("success");
+    res.locals.error = req.flash("error");
+    res.locals.deleted = req.flash("deleted");
+    next();
+});
+
 
 
 
@@ -58,6 +60,15 @@ app.use(express.static(path.join(__dirname, "public")));
 app.get("/", (req, res) => {
   res.send("Hi, I am root");
 });
+
+//test flash
+app.get("/test-flash", (req, res) => {
+    req.flash("success", "Success works!");
+    req.flash("deleted", "Deleted works!");
+    req.flash("error", "Error works!");
+    res.redirect("/listings");
+});
+
 
 
 //here we use the routes we imported 
