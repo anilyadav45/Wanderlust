@@ -29,7 +29,7 @@ app.use(session(sessionOptions));
 app.use(connectFlash());
 //flash middleware 
 app.use((req, res, next) => {
-  res.locals.sucess = req.flash("sucess");
+  res.locals.success = req.flash("success");
   res.locals.error = req.flash("error");
   next();//to not get stuck in middleware
 })

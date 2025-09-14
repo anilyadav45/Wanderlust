@@ -42,7 +42,7 @@ router.post("/", validateListing, wrapAsync(async (req, res, next) => {
     try {
         const newListing = new Listing(req.body.listing);
         await newListing.save();
-        req.flash("sucess","Succesfully made a new listing"); // after save new listing it display flash one time 
+        req.flash("success","Succesfully made a new listing"); // after save new listing it display flash one time 
         res.redirect("/listings");
     } catch (err) {
         next(err); // Passes the error to the error handling middleware
@@ -61,6 +61,7 @@ router.get("/:id/edit", async (req, res) => {
 router.put("/:id", async (req, res) => {
     let { id } = req.params;
     await Listing.findByIdAndUpdate(id, { ...req.body.listing });
+    req.flash("success","Listing updated successfully");
     res.redirect(`/listings/${id}`);
 });
 
@@ -69,6 +70,7 @@ router.delete("/:id", async (req, res) => {
     let { id } = req.params;
     let deletedListing = await Listing.findByIdAndDelete(id);
     console.log(deletedListing);
+    req.flash("success","Succesfully deleted a listing");
     res.redirect("/listings");
 });
 

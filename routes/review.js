@@ -1,8 +1,8 @@
 const express = require('express');
-const router = express.Router({ mergeParams: true});// mergeParams allows us to access params from parent route
+const router = express.Router({ mergeParams: true });// mergeParams allows us to access params from parent route
 const ExpressError = require("../utils/ExpressError.js");
 const wrapAsync = require("../utils/wrapAsync.js");
-const {reviewSchema } = require("../schema.js");
+const { reviewSchema } = require("../schema.js");
 const Listing = require("../models/listing.js");
 const Review = require("../models/review.js");
 
@@ -29,6 +29,8 @@ router.post("/", validateReview, wrapAsync(async (req, res) => { // we cut the c
     await newReview.save(); // save the new review to the database
     await listing.save();
     console.log(newReview);
+    req.flash("success", "Succesfully review added");
+
     res.redirect(`/listings/${id}`);;
 }));
 
@@ -37,6 +39,7 @@ router.delete("/:reviewId", wrapAsync(async (req, res) => {
     let { id, reviewId } = req.params;
     await Listing.findByIdAndUpdate(id, { $pull: { reviews: reviewId } });
     await Listing.findByIdAndDelete(reviewId);
+    req.flash("success", "Succesfully deleted a review");
     res.redirect(`/listings/${id}`);
 }))
 
