@@ -1,4 +1,4 @@
-// schemas.js  -- this is for server side validation usnig joi
+// schemas.js  -- this is for server side validation usnig joi only - not for error handling 
 const Joi = require("joi");
 //for listingschema validation
 const listingSchema = Joi.object({

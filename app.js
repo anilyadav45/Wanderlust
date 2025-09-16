@@ -7,13 +7,18 @@ const engine = require('ejs-mate');
 const MONGO_URL = "mongodb://127.0.0.1:27017/wanderlust";
 app.engine('ejs', engine);
 //importing routes
-const listings = require("./routes/listing.js");
-const reviews = require("./routes/review.js");
+const listingRouter = require("./routes/listingRouter.js");
+const reviewRouter = require("./routes/reviewRouter.js");
+const userRouter = require("./routes/userRouter.js");
 //sesssion require
 const session = require('express-session');
 const connectFlash = require('connect-flash');
+//for user authentication -- use after session
+const passport = require('passport');
+const localStrategy = require('passport-local');
+const User = require('./models/user.js');
 
-const sessionOptions = {
+const sessionOptions = {//it help eg after login we can access the different tabs without login again and again so it used in passport also 
   secret: 'keyboard cat',
   resave: false,
   saveUninitialized: true,
@@ -26,14 +31,22 @@ const sessionOptions = {
 //using session middleware
 app.use(session(sessionOptions));
 //always use flash after session 
-app.use(connectFlash());
-//flash middleware creating like success ,error,etc and we can use it in all ejs files
+app.use(connectFlash());//flash middleware creating local variables for flash messages
+//using pasasport and passport local for auth and always after session so that page to page auth provided
+app.use(passport.initialize());
+app.use(passport.session());
+//configure passport to use local strategy
+passport.use(new localStrategy(User.authenticate()));//this line create new localstrategy and authenticate for each User and .authenticate generate a func that is used is PLStrategy
+passport.serializeUser(User.serializeUser());//serialize mean store user so that user is longer in process page to page 
+passport.deserializeUser(User.deserializeUser()); // deserialze no longer info stored so can't get sign in 
+
 app.use((req, res, next) => {
-    res.locals.success = req.flash("success");
-    res.locals.error = req.flash("error");
-    res.locals.deleted = req.flash("deleted");
-    next();
+  res.locals.success = req.flash("success");
+  res.locals.error = req.flash("error");
+  res.locals.deleted = req.flash("deleted");
+  next();
 });
+
 
 
 
@@ -61,20 +74,14 @@ app.get("/", (req, res) => {
   res.send("Hi, I am root");
 });
 
-//test flash
-app.get("/test-flash", (req, res) => {
-    req.flash("success", "Success works!");
-    req.flash("deleted", "Deleted works!");
-    req.flash("error", "Error works!");
-    res.redirect("/listings");
-});
 
 
 
 //here we use the routes we imported 
-app.use("/listings", listings);
-app.use("/listings/:id/reviews", reviews);//like wise we make many indivisual routes like listings and reviews where related routes are grouped together and we can use them in app.js
+app.use("/listings", listingRouter);
+app.use("/listings/:id/reviews", reviewRouter);//like wise we make many indivisual routes like listings and reviews where related routes are grouped together and we can use them in app.js
 //we use common part of the route here after that all present in indivisual routes
+app.use("/", userRouter);//deined so that all routes we create we start form here like /signup , /login etc.
 
 
 app.listen(8080, () => {
