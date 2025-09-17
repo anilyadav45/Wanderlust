@@ -41,4 +41,15 @@ router.post("/login",
 
 )
 
-module.exports = router;
+// log out route : passport auto logout the user this is inbuild method 
+router.get("/logout",(req,res,next)=>{
+    req.logout((err)=>{
+        if(err){
+            return next(err);
+        }
+        req.flash("success","Logged out succesfully");
+        res.redirect("/listings");
+    })
+})
+
+    module.exports = router;

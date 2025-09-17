@@ -1,6 +1,6 @@
 
 const isLoggedIn = (req, res, next) => {
-    console.log("user is " + req.user);//where ever we use this middleware, we can access req.user
+    console.log("user is " + req.user);//here we can see the user object from what passport is auth. 
 
     if (!req.isAuthenticated()) {
         req.flash("error", "You must have logged in first");

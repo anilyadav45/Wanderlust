@@ -40,7 +40,7 @@ router.get("/test-flash", async(req, res) => {
 });
 
 //New Route
-router.get("/new",isLoggedIn ,(req, res) => {
+router.get("/new" ,isLoggedIn,(req, res) => {
     res.render("listings/new.ejs");
 });
 
