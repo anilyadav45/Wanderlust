@@ -4,15 +4,16 @@ const ExpressError = require("../utils/ExpressError.js");
 const wrapAsync = require("../utils/wrapAsync.js");
 const Listing = require("../models/listing.js");
 const Review = require("../models/review.js");
-const {validateReview} = require("../middleware.js");
+const {validateReview,isLoggedIn} = require("../middleware.js");
 
 
 //routes for reviews 
 //review post route within listing 
-router.post("/", validateReview, wrapAsync(async (req, res) => { // we cut the common part of the route like /listings/:id/reviews/thenmore
+router.post("/", isLoggedIn, validateReview, wrapAsync(async (req, res) => { // we cut the common part of the route like /listings/:id/reviews/thenmore
     let { id } = req.params;
     const listing = await Listing.findById(id);
     const newReview = new Review(req.body.review);
+    newReview.author = req.user._id; // jo user loggedin rehega wahi reviewAuthor hoga
     console.log(newReview);
     listing.reviews.push(newReview);//since each listing have array of reviews so we ca push new review to listing
     await newReview.save(); // save the new review to the database

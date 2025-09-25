@@ -3,7 +3,7 @@ const router = express.Router();
 const ExpressError = require("../utils/ExpressError.js");
 const wrapAsync = require("../utils/wrapAsync.js");
 const Listing = require("../models/listing.js");
-const { isLoggedIn, isOwner,validateListing,validateReview } = require("../middleware.js");
+const { isLoggedIn, isOwner, validateListing, validateReview } = require("../middleware.js");
 
 //routes -- instead of app now we use router
 
@@ -33,7 +33,15 @@ router.get("/new", isLoggedIn, (req, res) => {
 //Show Route
 router.get("/:id", async (req, res) => {
     let { id } = req.params;
-    const listing = await Listing.findById(id).populate("reviews").populate("owner");//populate let reviews in details to access and for owner also
+    const listing = await Listing.findById(id)
+        .populate({
+            path: "reviews",
+            populate: {
+                path: "author", // review ke sath author detail aajaye  we use in ejs
+            }
+        })
+        .populate("owner");
+    //populate nested will give details of objects
     console.log(listing.owner.username);//here you can see in details what populate do so we can access in ejs for each listing owner
     res.render("listings/show.ejs", { listing });
 });
@@ -61,7 +69,7 @@ router.get("/:id/edit", isLoggedIn, isOwner, async (req, res) => {
 });
 
 //Update Route
-router.put("/:id", isLoggedIn,isOwner, async (req, res) => {
+router.put("/:id", isLoggedIn, isOwner, async (req, res) => {
     let { id } = req.params;
     await Listing.findByIdAndUpdate(id, { ...req.body.listing });
     req.flash("success", "Listing updated successfully");
@@ -69,7 +77,7 @@ router.put("/:id", isLoggedIn,isOwner, async (req, res) => {
 });
 
 //Delete Route
-router.delete("/:id", isLoggedIn,isOwner, async (req, res) => {
+router.delete("/:id", isLoggedIn, isOwner, async (req, res) => {
     let { id } = req.params;
     let deletedListing = await Listing.findByIdAndDelete(id);
     console.log(deletedListing);

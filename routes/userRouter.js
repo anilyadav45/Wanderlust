@@ -45,7 +45,7 @@ router.post("/login", saveReqUrl,
         //after login redirect to user requested url which use saved in session 
         const redirectUrl = res.locals.reqUrl;
         if(redirectUrl){
-            res.redirect(redirectUrl);
+            return res.redirect(redirectUrl);
         }
         res.redirect("/listings");
     })
