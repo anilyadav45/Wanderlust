@@ -2,22 +2,8 @@ const express = require('express');
 const router = express.Router();
 const ExpressError = require("../utils/ExpressError.js");
 const wrapAsync = require("../utils/wrapAsync.js");
-const { listingSchema } = require("../schema.js");
 const Listing = require("../models/listing.js");
-const { isLoggedIn, isOwner } = require("../middleware.js");
-
-//here whatever we use int listing route we need to require it 
-
-//validatelisting middleware  for server side form validation
-const validateListing = (req, res, next) => {
-    let { error } = listingSchema.validate(req.body);
-    if (error) {
-        let errMsg = error.details.map((el) => el.message).join(",");
-        throw new ExpressError(errMsg, 400);
-    } else {
-        next();
-    }
-};
+const { isLoggedIn, isOwner,validateListing,validateReview } = require("../middleware.js");
 
 //routes -- instead of app now we use router
 

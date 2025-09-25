@@ -2,21 +2,9 @@ const express = require('express');
 const router = express.Router({ mergeParams: true });// mergeParams allows us to access params from parent route
 const ExpressError = require("../utils/ExpressError.js");
 const wrapAsync = require("../utils/wrapAsync.js");
-const { reviewSchema } = require("../schema.js");
 const Listing = require("../models/listing.js");
 const Review = require("../models/review.js");
-
-
-//validateReview middleware  for server side form validation
-const validateReview = (req, res, next) => {
-    let { error } = reviewSchema.validate(req.body);
-    if (error) {
-        let errMsg = error.details.map((el) => el.message).join(",");
-        throw new ExpressError(errMsg, 400);
-    } else {
-        next();
-    }
-};
+const {validateReview} = require("../middleware.js");
 
 
 //routes for reviews 
