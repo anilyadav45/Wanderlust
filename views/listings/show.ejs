@@ -24,69 +24,71 @@
             <div class="listing-location">
               <%= listing.location %>, <%= listing.country %>
             </div>
-
-            <div class="listing-actions">
-              <a href="/listings/<%= listing._id %>/edit">Edit this Listing</a>
-              <form method="POST" action="/listings/<%=listing._id%>?_method=DELETE">
-                <button>Delete this listing</button>
-              </form>
-            </div>
-            <br>
-            <hr>
-            <div class="review mt-3 mb-3">
-              <h3>Leave a Review</h3>
-              <form action="/listings/<%= listing._id %>/reviews" method="POST" novalidate class="needs-validation">
-                <div class="review-box mt-3 mb-3 text-start">
-                  <label for="rating" class="form-label">rating</label>
-                  <input class="form-label form-range" type="range" name="review[rating]" id="rating" min="1" max="5"
-                    required>
+          
+              <div class="listing-actions">
+                <a href="/listings/<%= listing._id %>/edit">Edit</a>
+                <form method="POST" action="/listings/<%=listing._id%>?_method=DELETE">
+                  <button>Delete</button>
+                </form>
+              </div>
+              
+                <br>
+                <hr>
+                <div class="review mt-3 mb-3">
+                  <h3>Leave a Review</h3>
+                  <form action="/listings/<%= listing._id %>/reviews" method="POST" novalidate class="needs-validation">
+                    <div class="review-box mt-3 mb-3 text-start">
+                      <label for="rating" class="form-label">rating</label>
+                      <input class="form-label form-range" type="range" name="review[rating]" id="rating" min="1"
+                        max="5" required>
+                    </div>
+                    <div class="comment-box mt-3 mb-3 text-start">
+                      <label for="comment" class="form-label">comment</label>
+                      <textarea class="form-label form-control" name="review[comment]" id="comment" cols="30" rows="5"
+                        required></textarea>
+                      <div class="invalid-feedback">Please leave a comment for feedback!</div>
+                    </div>
+                    <div class="review-btn text-start">
+                      <button type="submit" class="btn btn-primary">Submit Review</button>
+                      <div class="valid-feedback">Thank you for your feedback!</div>
+                    </div>
+                  </form>
                 </div>
-                <div class="comment-box mt-3 mb-3 text-start">
-                  <label for="comment" class="form-label">comment</label>
-                  <textarea class="form-label form-control" name="review[comment]" id="comment" cols="30" rows="5"
-                    required></textarea>
-                  <div class="invalid-feedback">Please leave a comment for feedback!</div>
+                <br>
+                <div class="reviews row">
+                  <p><b>All Reviews</b></p>
+                  <% for(let review of listing.reviews){ %>
+                    <div class="card col-5 mb-3 ms-5">
+                      <div class="card-body">
+                        <h5>AnonymousUser</h5>
+                        <p class="card-text">
+                          <% for (let i=0; i < 5; i++) { %>
+                            <% if (i < review.rating) { %>
+                              <i class="fa-solid fa-star" style="color: gold;"></i>
+                              <% } else { %>
+                                <i class="fa-regular fa-star" style="color: gold;"></i>
+                                <% } %>
+                                  <% } %>
+                                    <small>
+                                      <%= review.createdAt.toLocaleDateString() %>
+                                    </small>
+                        </p>
+
+
+                        <p class="card-text">
+                          <%= review.comment %>
+                        </p>
+                        <form method="POST"
+                          action="/listings/<%=listing.id  %>/reviews/<%= review._id %>?_method=DELETE">
+                          <button class="btn btn-danger" type="submit">Delete</button>
+                        </form>
+                      </div>
+                    </div>
+
+
+
+                    <% }%>
                 </div>
-                <div class="review-btn text-start">
-                  <button type="submit" class="btn btn-primary">Submit Review</button>
-                  <div class="valid-feedback">Thank you for your feedback!</div>
-                </div>
-              </form>
-            </div>
-            <br>
-            <div class="reviews row">
-              <p><b>All Reviews</b></p>
-              <% for(let review of listing.reviews){ %>
-                <div class="card col-5 mb-3 ms-5">
-                  <div class="card-body">
-                    <h5>AnonymousUser</h5>
-                    <p class="card-text">
-                      <% for (let i=0; i < 5; i++) { %>
-                        <% if (i < review.rating) { %>
-                          <i class="fa-solid fa-star" style="color: gold;"></i>
-                          <% } else { %>
-                            <i class="fa-regular fa-star" style="color: gold;"></i>
-                            <% } %>
-                              <% } %>
-                                <small>
-                                  <%= review.createdAt.toLocaleDateString() %>
-                                </small>
-                    </p>
-
-
-                    <p class="card-text">
-                      <%= review.comment %>
-                    </p>
-                    <form method="POST" action="/listings/<%=listing.id  %>/reviews/<%= review._id %>?_method=DELETE">
-                      <button class="btn btn-danger" type="submit">Delete</button>
-                    </form>
-                  </div>
-                </div>
-
-
-
-                <% }%>
-            </div>
 
       </div>
     </div>

@@ -44,7 +44,7 @@ app.use((req, res, next) => {
   res.locals.success = req.flash("success");
   res.locals.error = req.flash("error");
   res.locals.deleted = req.flash("deleted");
-  res.locals.currentUser = req.user; // passport store the user in req.user so we can access it in all ejs files
+  res.locals.currentUser = req.user; // passport store the user in req.user so we can access it in all ejs files like we used if else to show btns or not acording to ownership of listing
   next();
 });
 

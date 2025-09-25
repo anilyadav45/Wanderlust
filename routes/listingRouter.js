@@ -4,7 +4,7 @@ const ExpressError = require("../utils/ExpressError.js");
 const wrapAsync = require("../utils/wrapAsync.js");
 const { listingSchema } = require("../schema.js");
 const Listing = require("../models/listing.js");
-const { isLoggedIn } = require("../middleware.js");
+const { isLoggedIn, isOwner } = require("../middleware.js");
 
 //here whatever we use int listing route we need to require it 
 
@@ -68,14 +68,14 @@ router.post("/", isLoggedIn, validateListing, wrapAsync(async (req, res, next) =
 
 
 //Edit Route
-router.get("/:id/edit", isLoggedIn, async (req, res) => {
+router.get("/:id/edit", isLoggedIn, isOwner, async (req, res) => {
     let { id } = req.params;
     const listing = await Listing.findById(id);
     res.render("listings/edit.ejs", { listing });
 });
 
 //Update Route
-router.put("/:id", isLoggedIn, async (req, res) => {
+router.put("/:id", isLoggedIn,isOwner, async (req, res) => {
     let { id } = req.params;
     await Listing.findByIdAndUpdate(id, { ...req.body.listing });
     req.flash("success", "Listing updated successfully");
@@ -83,7 +83,7 @@ router.put("/:id", isLoggedIn, async (req, res) => {
 });
 
 //Delete Route
-router.delete("/:id", isLoggedIn, async (req, res) => {
+router.delete("/:id", isLoggedIn,isOwner, async (req, res) => {
     let { id } = req.params;
     let deletedListing = await Listing.findByIdAndDelete(id);
     console.log(deletedListing);

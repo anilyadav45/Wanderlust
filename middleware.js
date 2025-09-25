@@ -1,4 +1,5 @@
 
+let Listing = require("./models/listing");
 const isLoggedIn = (req, res, next) => {
     console.log("user is " + req.user);//here we can see the user object from what passport is auth. 
     //maniye koi user direct new , edit , delete route pe ja raha tha but wo login na hone ka karan usse login form mila so usne login kiya but wo /listings pe redirect ho gaya so that is not good UX for user mano koi important page pe ja raha tha wo waha pe hi redirect ho uske liye hum session me -- 1.user ki requested url req.path and req.originalUrl me store karwa denge so after login wo kaha jana chahta tha wo waha redirect wo sake naki ki same page jo hamne after login defualt set kiye he
@@ -26,4 +27,17 @@ const saveReqUrl = (req, res, next) => {
     next();
 }
 
-module.exports = { isLoggedIn, saveReqUrl };//we can export multiple middleware here
+
+
+//midW to verfiy Owner for edit/delete -- used in edit and delete route
+const isOwner = async (req, res, next) => {
+    let { id } = req.params;//our req id
+    let listing = await Listing.findById(id);//find from db
+    if (!listing.owner.equals(res.locals.currentUser._id)) {
+        req.flash("error", "You are not the owner for this operations");
+        return res.redirect("/listings");
+    }
+    next();//if owner hai ta next kam sab hotai
+}
+
+module.exports = { isLoggedIn, saveReqUrl, isOwner };//we can export multiple middleware here
