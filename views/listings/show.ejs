@@ -6,7 +6,11 @@
         <% if (listing.image && listing.image.url) { %>
           <img src="<%= listing.image.url %>" alt="<%= listing.title %>" />
           <% } %>
-
+            <div class="listing-username">
+              Posted by : <b>
+                <%= listing.owner.username %>
+              </b>
+            </div>
             <div class="listing-title">
               <%= listing.title %>
             </div>

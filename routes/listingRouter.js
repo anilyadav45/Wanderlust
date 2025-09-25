@@ -4,7 +4,7 @@ const ExpressError = require("../utils/ExpressError.js");
 const wrapAsync = require("../utils/wrapAsync.js");
 const { listingSchema } = require("../schema.js");
 const Listing = require("../models/listing.js");
-const {isLoggedIn} = require("../middleware.js");
+const { isLoggedIn } = require("../middleware.js");
 
 //here whatever we use int listing route we need to require it 
 
@@ -32,7 +32,7 @@ router.get("/", async (req, res) => {
     }
 });
 //test flash
-router.get("/test-flash", async(req, res) => {
+router.get("/test-flash", async (req, res) => {
     await req.flash("success", "Success works!");
     await req.flash("deleted", "Deleted works!");
     await req.flash("error", "Error works!");
@@ -40,23 +40,26 @@ router.get("/test-flash", async(req, res) => {
 });
 
 //New Route
-router.get("/new" ,isLoggedIn,(req, res) => {
+router.get("/new", isLoggedIn, (req, res) => {
     res.render("listings/new.ejs");
 });
 
 //Show Route
 router.get("/:id", async (req, res) => {
     let { id } = req.params;
-    const listing = await Listing.findById(id).populate("reviews");//populate let reviews in details to access
+    const listing = await Listing.findById(id).populate("reviews").populate("owner");//populate let reviews in details to access and for owner also
+    console.log(listing.owner.username);//here you can see in details what populate do so we can access in ejs for each listing owner
     res.render("listings/show.ejs", { listing });
 });
 
 //Create Route
-router.post("/", isLoggedIn,validateListing, wrapAsync(async (req, res, next) => {
+router.post("/", isLoggedIn, validateListing, wrapAsync(async (req, res, next) => {
     try {
         const newListing = new Listing(req.body.listing);
+        newListing.owner = req.user._id; // associating listing with user who created it -- for new listing owner is current user so we assing user id to owner
         await newListing.save();
-        req.flash("success", "Succesfully made a new listing"); // after save new listing it display flash one time 
+        req.flash("success", "Succesfully made a new listing"); // after save new listing it display flash one time
+        console.log(newListing);
         res.redirect("/listings");
     } catch (err) {
         next(err); // Passes the error to the error handling middleware
@@ -65,14 +68,14 @@ router.post("/", isLoggedIn,validateListing, wrapAsync(async (req, res, next) =>
 
 
 //Edit Route
-router.get("/:id/edit",isLoggedIn, async (req, res) => {
+router.get("/:id/edit", isLoggedIn, async (req, res) => {
     let { id } = req.params;
     const listing = await Listing.findById(id);
     res.render("listings/edit.ejs", { listing });
 });
 
 //Update Route
-router.put("/:id",isLoggedIn, async (req, res) => {
+router.put("/:id", isLoggedIn, async (req, res) => {
     let { id } = req.params;
     await Listing.findByIdAndUpdate(id, { ...req.body.listing });
     req.flash("success", "Listing updated successfully");
@@ -80,7 +83,7 @@ router.put("/:id",isLoggedIn, async (req, res) => {
 });
 
 //Delete Route
-router.delete("/:id",isLoggedIn, async (req, res) => {
+router.delete("/:id", isLoggedIn, async (req, res) => {
     let { id } = req.params;
     let deletedListing = await Listing.findByIdAndDelete(id);
     console.log(deletedListing);

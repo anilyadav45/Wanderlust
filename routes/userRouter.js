@@ -44,7 +44,10 @@ router.post("/login", saveReqUrl,
         req.flash("success", "Login succesfully");
         //after login redirect to user requested url which use saved in session 
         const redirectUrl = res.locals.reqUrl;
-        res.redirect(redirectUrl);
+        if(redirectUrl){
+            res.redirect(redirectUrl);
+        }
+        res.redirect("/listings");
     })
 
 )
