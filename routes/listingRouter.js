@@ -8,29 +8,24 @@ const { isLoggedIn, isOwner, validateListing, validateReview } = require("../mid
 //require controller for routing
 const listingController = require("../controllers/listing.js");
 
-//routes -- instead of app now we use router
+//keeping common routes in one --> router.route so to debug it will be easy and also we don't have to write path again and again
+// -  "/"
+router.route("/")
+    .get(wrapAsync(listingController.index))
+    .post(isLoggedIn, validateListing, wrapAsync(listingController.postListing));
 
 
-//INdex route
-router.get("/", wrapAsync(listingController.index)); // bcoz of controller we just use route here not write whole callbacks
 
 //New Route
-router.get("/new", isLoggedIn, listingController.renderNewRoute);
-
-//Show Route
-router.get("/:id", listingController.showListing);
-
-//Create Route
-router.post("/", isLoggedIn, validateListing, wrapAsync(listingController.postListing));
-
-
+router.get("/new", isLoggedIn, wrapAsync(listingController.renderNewRoute));
 //Edit Route
-router.get("/:id/edit", isLoggedIn, isOwner, listingController.editListingGet);
+router.get("/:id/edit", isLoggedIn, isOwner, wrapAsync(listingController.editListingGet));
 
-//Update Route
-router.put("/:id", isLoggedIn, isOwner, listingController.editPutReq);
+//for  -  /:id commons path
+router.route("/:id")
+    .get(wrapAsync(listingController.showListing))
+    .put(isLoggedIn, isOwner, wrapAsync(listingController.editPutReq))
+    .delete(isLoggedIn, isOwner, wrapAsync(listingController.destroyListing));
 
-//Delete Route
-router.delete("/:id", isLoggedIn, isOwner, listingController.destroyListing);
 
 module.exports = router; // exporting router 

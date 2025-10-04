@@ -1,5 +1,6 @@
 
 let Listing = require("./models/listing");
+let ExpressError = require("./utils/ExpressError");
 const { listingSchema ,reviewSchema} = require("./schema");
 
 const isLoggedIn = (req, res, next) => {

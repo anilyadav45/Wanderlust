@@ -16,7 +16,7 @@ const listingSchema = new Schema({
     },
     url: {
       type: String,
-      default: 'https://upload.wikimedia.org/wikipedia/commons/a/ac/No_image_available.svg'
+      default: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e'
     }
   },
   price: {

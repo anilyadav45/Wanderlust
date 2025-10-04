@@ -36,6 +36,9 @@ module.exports.showListing = async (req, res) => {
 module.exports.postListing = async (req, res, next) => {
     try {
         const newListing = new Listing(req.body.listing);
+        if (!newListing.image.url) {
+            newListing.image.url = "https://images.unsplash.com/photo-1507525428034-b723cf961d3e";
+        }
         newListing.owner = req.user._id; // associating listing with user who created it -- for new listing owner is current user so we assing user id to owner
         await newListing.save();
         req.flash("success", "Succesfully made a new listing"); // after save new listing it display flash one time
