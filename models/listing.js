@@ -10,14 +10,8 @@ const listingSchema = new Schema({
   },
   description: String,
   image: {
-    filename: {
-      type: String,
-      default: 'no-image.png',
-    },
-    url: {
-      type: String,
-      default: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e'
-    }
+    url: String,
+    filename: String
   },
   price: {
     type: Number,
@@ -31,9 +25,9 @@ const listingSchema = new Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: "Review"
   }],
-  owner : {
-    type:mongoose.Schema.Types.ObjectId,
-    ref:"User"
+  owner: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User"
   },
 });
 

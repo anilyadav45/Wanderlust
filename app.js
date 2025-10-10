@@ -28,6 +28,8 @@ const sessionOptions = {//it help eg after login we can access the different tab
     httpOnly: true
   }
 }
+
+
 //using session middleware
 app.use(session(sessionOptions));
 //always use flash after session 

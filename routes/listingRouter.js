@@ -4,6 +4,8 @@ const ExpressError = require("../utils/ExpressError.js");
 const wrapAsync = require("../utils/wrapAsync.js");
 const Listing = require("../models/listing.js");
 const { isLoggedIn, isOwner, validateListing, validateReview } = require("../middleware.js");
+const { upload } = require("../multer.middleware.js");
+const { uploadOnCloudinary } = require("../utils/cloudinary.js");
 
 //require controller for routing
 const listingController = require("../controllers/listing.js");
@@ -12,7 +14,8 @@ const listingController = require("../controllers/listing.js");
 // -  "/"
 router.route("/")
     .get(wrapAsync(listingController.index))
-    .post(isLoggedIn, validateListing, wrapAsync(listingController.postListing));
+    // .post(isLoggedIn, upload.single('listing[image]'), validateListing, wrapAsync(listingController.postListing));
+    .post(isLoggedIn, upload.single('listing[image]'), wrapAsync(listingController.postListing));
 
 
 

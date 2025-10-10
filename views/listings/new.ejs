@@ -2,7 +2,7 @@
 
   <body>
     <div class="new-location">
-      <form class="listing-card needs-validation" method="POST" action="/listings" novalidate>
+      <form class="listing-card needs-validation" method="POST" action="/listings" novalidate enctype="multipart/form-data">
         <h3>Create a New Listing</h3>
 
         <div class="mb-3">
@@ -18,10 +18,14 @@
 
         </div>
 
-        <div class="mb-3">
+        <!-- <div class="mb-3">
           <input name="listing[image][url]" placeholder="Enter image URL/Link" type="text" class="form-control" />
           <div class="invalid-feedback">Paste Valid links!</div>
+        </div> -->
 
+        <div class="mb-3">
+          <input name="listing[image]" placeholder="Upload file" type="file" class="form-control" />
+          <!-- <div class="invalid-feedback">Paste Valid links!</div>// -->
         </div>
 
         <div class="mb-3">
@@ -43,5 +47,5 @@
         <button type="submit" class="btn btn-primary">Add Listing</button>
       </form>
     </div>
-  
+
   </body>

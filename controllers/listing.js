@@ -1,6 +1,7 @@
 
 //Controllers/listings
 const Listing = require("../models/listing");
+const { uploadOnCloudinary } = require("../utils/cloudinary.js");
 //listing index route
 module.exports.index = async (req, res) => {
     try {
@@ -28,24 +29,50 @@ module.exports.showListing = async (req, res) => {
         })
         .populate("owner");
     //populate nested will give details of objects
-    console.log(listing.owner.username);//here you can see in details what populate do so we can access in ejs for each listing owner
+    if (listing.owner) {
+        console.log(listing.owner.username);
+    } else {
+        console.log(" This listing has no owner info yet");
+    }
+
     res.render("listings/show.ejs", { listing });
 };
 
 //post listing 
 module.exports.postListing = async (req, res, next) => {
     try {
+        // 1️ Upload the file from multer temp folder to Cloudinary
+        const cloudUrl = await uploadOnCloudinary(req.file.path);
+
+        // 2️ Create a new listing using form data + Cloudinary URL
         const newListing = new Listing(req.body.listing);
-        if (!newListing.image.url) {
-            newListing.image.url = "https://images.unsplash.com/photo-1507525428034-b723cf961d3e";
+
+        if (cloudUrl) {
+            newListing.image = {
+                url: cloudUrl,
+                filename: req.file.filename
+            };
+        } else {
+            // fallback image if upload fails
+            newListing.image = {
+                url: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e",
+                filename: "default"
+            };
         }
-        newListing.owner = req.user._id; // associating listing with user who created it -- for new listing owner is current user so we assing user id to owner
+
+
+        newListing.owner = req.user._id;
+
+        //saave to mongodb
         await newListing.save();
-        req.flash("success", "Succesfully made a new listing"); // after save new listing it display flash one time
-        console.log(newListing);
-        res.redirect("/listings");
+
+        console.log(" Saved listing with Cloudinary image:", newListing);
+        req.flash("success", "Successfully created a new listing!");
+        res.redirect(`/listings/${newListing._id}`);
+
     } catch (err) {
-        next(err); // Passes the error to the error handling middleware
+        console.error("Error creating listing:", err);
+        next(err);
     }
 };
 
