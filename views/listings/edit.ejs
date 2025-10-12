@@ -4,12 +4,17 @@
     <div class="edit-container">
       <h2>Edit Your Listing</h2>
 
-      <form method="POST" action="/listings/<%= listing._id %>?_method=PUT" class="edit-form">
+      <form method="POST" action="/listings/<%= listing._id %>?_method=PUT" class="edit-form"
+        enctype="multipart/form-data">
         <input name="listing[title]" value="<%= listing.title %>" type="text" placeholder="Title" />
 
         <textarea name="listing[description]" placeholder="Description"><%= listing.description %></textarea>
 
-        <input name="listing[image][url]" value="<%= listing.image.url%>" type="text" placeholder="Image URL" />
+        <div class="mb-3">
+          <label for="image" class="form-label">Upload new file</label>
+          <input name="listing[image]" placeholder="Upload file" type="file" class="form-control" />
+          <div class="invalid-feedback">Paste Valid file!</div>//
+        </div>
 
         <input name="listing[price]" value="<%= listing.price %>" type="number" placeholder="Price" />
 

@@ -2,6 +2,7 @@
 //Controllers/listings
 const Listing = require("../models/listing");
 const { uploadOnCloudinary } = require("../utils/cloudinary.js");
+
 //listing index route
 module.exports.index = async (req, res) => {
     try {
@@ -83,14 +84,33 @@ module.exports.editListingGet = async (req, res) => {
     res.render("listings/edit.ejs", { listing });
 };
 
-//edit listing post - put req 
+//edit listing post - put req -actual edit handler
 module.exports.editPutReq = async (req, res) => {
     let { id } = req.params;
-    await Listing.findByIdAndUpdate(id, { ...req.body.listing });
-    req.flash("success", "Listing updated successfully");
+    let listing = await Listing.findByIdAndUpdate(id, { ...req.body.listing }, { new: true });
+   
+    console.log("old listing:", listing);
+    console.log("req.file:",req.file);
+  
+
+    // check if file exists (when user uploads new image)
+    if (typeof req.file !== 'undefined') {
+        // upload new image to cloudinary
+        const result = await uploadOnCloudinary(req.file.path);
+
+        if (result) {
+            console.log("result is : ",result);
+            listing.image = {
+                url: result,
+                filename: req.file.filename
+            };
+            await listing.save();
+        }
+    }
+
+    req.flash("success", "Listing updated successfully!");
     res.redirect(`/listings/${id}`);
 };
-
 //delete or destroy  listing route
 module.exports.destroyListing = async (req, res) => {
     let { id } = req.params;

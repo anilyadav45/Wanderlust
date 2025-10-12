@@ -22,12 +22,12 @@ router.route("/")
 //New Route
 router.get("/new", isLoggedIn, wrapAsync(listingController.renderNewRoute));
 //Edit Route
-router.get("/:id/edit", isLoggedIn, isOwner, wrapAsync(listingController.editListingGet));
+router.get("/:id/edit", isLoggedIn, isOwner, upload.single('listing[image]'), wrapAsync(listingController.editListingGet));
 
 //for  -  /:id commons path
 router.route("/:id")
     .get(wrapAsync(listingController.showListing))
-    .put(isLoggedIn, isOwner, wrapAsync(listingController.editPutReq))
+    .put(isLoggedIn, isOwner,upload.single('listing[image]'), wrapAsync(listingController.editPutReq))
     .delete(isLoggedIn, isOwner, wrapAsync(listingController.destroyListing));
 
 
