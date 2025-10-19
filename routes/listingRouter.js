@@ -27,7 +27,7 @@ router.get("/:id/edit", isLoggedIn, isOwner, upload.single('listing[image]'), wr
 //for  -  /:id commons path
 router.route("/:id")
     .get(wrapAsync(listingController.showListing))
-    .put(isLoggedIn, isOwner,upload.single('listing[image]'), wrapAsync(listingController.editPutReq))
+    .put(isLoggedIn, isOwner, upload.single('listing[image]'), wrapAsync(listingController.editPutReq))
     .delete(isLoggedIn, isOwner, wrapAsync(listingController.destroyListing));
 
 

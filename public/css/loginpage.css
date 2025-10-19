@@ -1,0 +1,73 @@
+/* style.css */
+
+/* Center the form container on the page */
+.login-page,
+.new-location {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 80vh;
+    background-color: #f7f7f7; /* Light grey background */
+}
+
+/* Common card style for both login and signup forms */
+.login-form,
+.signup-form {
+    max-width: 450px;
+    width: 100%;
+    padding: 2.5rem;
+    border: 1px solid #dddddd;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    background-color: #ffffff;
+}
+
+/* Common style for the heading */
+.login-form h2,
+.signup-form h2 {
+    font-weight: 600;
+    margin-bottom: 1.5rem;
+    text-align: center;
+    color: #222222;
+}
+
+/* Common style for input fields */
+.login-form .form-control,
+.signup-form .form-control {
+    border-radius: 8px;
+    padding: 0.75rem 1rem;
+    border: 1px solid #b0b0b0;
+}
+
+/* Style for when an input is focused (clicked on) */
+.login-form .form-control:focus,
+.signup-form .form-control:focus {
+    border-color: #222222;
+    box-shadow: 0 0 0 2px rgba(34, 34, 34, 0.1);
+}
+
+/* Common style for labels */
+.login-form .form-label,
+.signup-form .form-label {
+    font-weight: 500;
+    color: #484848;
+}
+
+/* Main button style for both Login and SignUp */
+.login-form .btn-primary,
+.signup-form .btn-primary {
+    background: linear-gradient(to right, #E61E4D 0%, #E31C5F 50%, #D70466 100%);
+    border: none;
+    border-radius: 8px;
+    padding: 0.75rem;
+    font-weight: 600;
+    width: 100%;
+    margin-top: 1rem;
+    transition: box-shadow 0.2s ease;
+}
+
+/* Hover effect for the button */
+.login-form .btn-primary:hover,
+.signup-form .btn-primary:hover {
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.18);
+}
