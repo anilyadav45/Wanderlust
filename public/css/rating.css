@@ -195,3 +195,10 @@
   -webkit-transition: background-position .7s;
   transition: background-position .7s;
 }
+
+/* custom hand written for stars */
+.review-card{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}

@@ -8,7 +8,7 @@
           <% } %>
             <div class="listing-username">
               Posted by : <b>
-                <%= listing.owner.username %>
+                <%= listing.owner.username %> 
               </b>
             </div>
             <div class="listing-title">
@@ -85,12 +85,12 @@
                       <p><b>All Reviews</b></p>
                       <% for(let review of listing.reviews){ %>
                         <div class="card col-5 mb-3 ms-5">
-                          <div class="card-body">
-                            <h5>
-                              <%= review.author.username %>
+                          <div class="card-body review-card">
+                            <h5 class="card-text">
+                              @<%= review.author.username %>
                             </h5>
 
-                            <p class="starability-result card-text" data-rating="<%= review.rating %>">
+                            <p class="starability-result card-text  fk" data-rating="<%= review.rating %>">
                             </p>
 
 

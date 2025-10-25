@@ -77,11 +77,13 @@ module.exports.postListing = async (req, res, next) => {
     }
 };
 
-//edit listing - get form
+//edit listing - get form and passing listing and reduced url
 module.exports.editListingGet = async (req, res) => {
     let { id } = req.params;
     const listing = await Listing.findById(id);
-    res.render("listings/edit.ejs", { listing });
+    let originalUrl = listing.image.url;
+    originalUrl = originalUrl.replace("/upload","/upload/w_250");//reducing img size no need to render full kwality on edit route
+    res.render("listings/edit.ejs", { listing ,originalUrl});
 };
 
 //edit listing post - put req -actual edit handler
