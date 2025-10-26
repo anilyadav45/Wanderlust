@@ -1,0 +1,200 @@
+/* Custom Variables for Airbnb Aesthetics */
+:root {
+    --gray-dark: #222222;
+    --gray-light: #717171;
+    --border-color: #dddddd;
+    --bg-color: #f7f7f7;
+}
+
+/* ------------------------- */
+/* Filter Bar Container (Sticky Top) */
+/* ------------------------- */
+.filter-container {
+    background-color: white;
+    border-radius: 2rem;
+    border-bottom: 1px solid var(--border-color);
+    padding: 0 4vw;
+    /* Responsive horizontal padding */
+    z-index: 1000;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.filter-scroller {
+    display: flex;
+    overflow-x: scroll;
+    /* Enables horizontal scrolling */
+    -webkit-overflow-scrolling: touch;
+    /* Smoother scrolling on iOS */
+    scrollbar-width: none;
+    /* Hide scrollbar for Firefox */
+    padding: 10px 0;
+    min-height: 80px;
+    /* Ensures space for content */
+}
+
+/* Hide scrollbar for Chrome, Safari, Opera */
+.filter-scroller::-webkit-scrollbar {
+    display: none;
+}
+
+/* ------------------------- */
+/* Individual Filter Item */
+/* ------------------------- */
+.filter-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 15px;
+    margin: 0 10px;
+    cursor: pointer;
+    min-width: 100px;
+    transition: color 0.2s, border-bottom 0.2s;
+    color: var(--gray-light);
+    border-bottom: 2px solid transparent;
+    /* The placeholder for the active line */
+    text-align: center;
+    border-radius: 1.5rem;
+}
+
+
+.filter-item:hover {
+    color: var(--gray-dark);
+    /* border: 1px solid var(--gray-light); */
+    opacity: 0.7;
+    background-color: var(--bg-color);
+
+}
+
+.filter-item.active {
+    color: var(--gray-dark);
+    border-bottom: 2px solid var(--gray-dark);
+    /* Black line when active */
+}
+
+.filter-item i {
+    font-size: 1.3rem;
+    margin-bottom: 5px;
+}
+
+.filter-item h6 {
+    font-size: 0.75rem;
+    /* Smaller, clearer text */
+    font-weight: 500;
+    margin: 0;
+    white-space: nowrap;
+}
+
+/* ------------------------- */
+/* Filters Button Style */
+/* ------------------------- */
+
+.filter-group {
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 10px 18px;
+    cursor: pointer;
+    transition: box-shadow 0.2s;
+    color: var(--gray-dark);
+    font-weight: 600;
+    font-size: 0.85rem;
+    margin-left: 20px;
+    display: flex;
+    align-items: center;
+    white-space: nowrap;
+    flex-shrink: 0;
+    /* Prevents this button from shrinking */
+}
+
+.filter-group:hover {
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+/* ------------------------- */
+/* Tax Toggle Switch */
+/* ------------------------- */
+.tax-toggle-box {
+    display: flex;
+    align-items: center;
+    padding: 12px 20px;
+    border-left: 1px solid var(--border-color);
+    margin-left: 20px;
+    min-width: 250px;
+    flex-shrink: 0;
+}
+
+.toggle-text {
+    font-size: 0.9rem;
+    font-weight: 500;
+    margin-right: 15px;
+    white-space: nowrap;
+}
+
+/* Custom styling for the Bootstrap switch to look like Airbnb's */
+.form-switch .form-check-input {
+    width: 3.2rem;
+    height: 1.8rem;
+    border-radius: 50em;
+    cursor: pointer;
+    background-color: var(--gray-light);
+    border-color: var(--gray-light);
+    box-shadow: none;
+}
+
+.form-switch .form-check-input:checked {
+    background-color: var(--gray-dark);
+    /* Dark grey when ON */
+    border-color: var(--gray-dark);
+}
+
+/* for navbar of home experence and services */
+/* This assumes Font Awesome is loaded. 
+    It styles the navigation items to resemble Airbnb's rounded, interactive buttons.
+*/
+
+/* --- Navbar Container Adjustments --- */
+.navbar-nav {
+    /* Ensures the list items are well-spaced */
+    gap: 0.5rem;
+}
+
+/* --- Individual Navigation Item Styling --- */
+.airbnb-nav-item {
+    /* Reset Bootstrap padding to apply custom spacing */
+    padding: 8px 15px !important;
+
+    /* Make the link look like a rounded pill button */
+    border: 1px solid transparent;
+    border-radius: 20px;
+
+    /* Subtle background and text color adjustments */
+    background-color: transparent;
+    color: #222222 !important;
+    font-weight: 500 !important;
+    font-size: 0.95rem;
+
+    /* Enable the smooth transition for the hover effect */
+    transition: background-color 0.2s ease, transform 0.15s ease;
+
+    /* Ensure the icon and text are aligned nicely */
+    display: flex;
+    align-items: center;
+}
+
+.airbnb-nav-item:hover {
+    /* The key Airbnb-style hover effects: */
+
+    /* 1. Slight scale/shrink effect */
+    transform: scale(0.98);
+
+    /* 2. Background color change */
+    background-color: #f7f7f7;
+
+    /* 3. Subtle shadow if you want more depth (optional) */
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
+/* Style for the icons within the links */
+.airbnb-nav-item i {
+    font-size: 1rem;
+}

@@ -1,39 +1,103 @@
 <% layout("layouts/boilerplate.ejs") %>
-<body style="background-color: #f7f7f7;">
-  <div class="container mt-5">
-    <div class="d-flex justify-content-between align-items-center mb-4">
-      <h3 class="fw-bold">All Listings</h3>
-      <a href="/listings/new" class="btn btn-outline-dark rounded-pill px-4">Create New Listing</a>
-    </div>
 
-    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
-      <% for(let listing of allListings) { %>
-        <div class="col">
-          <div class="card h-100 shadow-sm border-0 rounded-4">
-            <a href="/listings/<%= listing._id %>" class="text-decoration-none text-dark">
-              <% if (listing.image && listing.image.url) { %>
-                <img src="<%- listing.image.url %>" class="card-img-top" alt="listing image"
-                     style="height: 250px; object-fit: cover; border-top-left-radius: 1rem; border-top-right-radius: 1rem;" />
-              <% } else { %>
-                <img src="https://via.placeholder.com/350x250?text=No+Image" class="card-img-top" alt="no image"
-                     style="height: 250px; object-fit: cover; border-top-left-radius: 1rem; border-top-right-radius: 1rem;" />
-              <% } %>
+  <link rel="stylesheet" href="/css/filterbar.css">
 
-              <div class="card-body">
-                <div class="d-flex justify-content-between align-items-center mb-2">
-                  <h5 class="card-title fw-semibold mb-0"><%= listing.title %></h5>
-                  <span class="badge bg-danger rounded-pill"><%= listing.country %></span>
-                </div>
-                <p class="card-text text-muted mb-1">
-  &#8377; <%= listing.price ? listing.price.toLocaleString("en-IN") : "N/A" %> / night
-</p>
+  <body style="background-color: #f7f7f7;">
+    <div class="container container-fluid filter-container sticky-top">
+      <div class="d-flex justify-content-start align-items-center">
 
-                <p class="card-text small text-muted"><%= listing.location %></p>
-              </div>
-            </a>
+        <div class="filter-scroller me-auto">
+          <div class="filter-item active" data-filter="trending">
+            <i class="fa-solid fa-fire"></i>
+            <h6>Trendings</h6>
+          </div>
+          <div class="filter-item" data-filter="rooms">
+            <i class="fa-solid fa-bed"></i>
+            <h6>Rooms</h6>
+          </div>
+          <div class="filter-item" data-filter="cities">
+            <i class="fa-solid fa-city"></i>
+            <h6>Iconic Cities</h6>
+          </div>
+          <div class="filter-item" data-filter="mountains">
+            <i class="fa-solid fa-mountain-sun"></i>
+            <h6>Mountains</h6>
+          </div>
+          <div class="filter-item" data-filter="pools">
+            <i class="fa-solid fa-water-ladder"></i>
+            <h6>Amazing Pools</h6>
+          </div>
+          <div class="filter-item" data-filter="cabins">
+            <i class="fa-solid fa-house-chimney-window"></i>
+            <h6>Tiny Cabins</h6>
+          </div>
+          <div class="filter-item" data-filter="beachfront">
+            <i class="fa-solid fa-umbrella-beach"></i>
+            <h6>Beachfront</h6>
+          </div>
+          <div class="filter-item" data-filter="lakeside">
+            <i class="fa-solid fa-sailboat"></i>
+            <h6>Lakeside</h6>
+          </div>
+          <div class="filter-item" data-filter="skiing">
+            <i class="fa-solid fa-person-skiing"></i>
+            <h6>Skiing</h6>
+          </div>
+          <div class="filter-item" data-filter="camping">
+            <i class="fa-solid fa-campground"></i>
+            <h6>Camping</h6>
+          </div>
+          <div class="filter-item" data-filter="domes">
+            <i class="fa-solid fa-igloo"></i>
+            <h6>Domes</h6>
+          </div>
+          <div class="filter-item" data-filter="castles">
+            <i class="fa-solid fa-chess-rook"></i>
+            <h6>Castles</h6>
           </div>
         </div>
-      <% } %>
+
+      </div>
     </div>
-  </div>
-</body>
+
+    <div class="container mt-4">
+      <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
+        <% for(let listing of allListings) { %>
+          <div class="col">
+            <div class="card h-100 shadow-sm border-0 rounded-4">
+              <a href="/listings/<%= listing._id %>" class="text-decoration-none text-dark">
+                <% if (listing.image && listing.image.url) { %>
+                  <img src="<%- listing.image.url %>" class="card-img-top" alt="listing image"
+                    style="height: 250px; object-fit: cover; border-top-left-radius: 1rem; border-top-right-radius: 1rem;" />
+                  <% } else { %>
+                    <img src="https://via.placeholder.com/350x250?text=No+Image" class="card-img-top" alt="no image"
+                      style="height: 250px; object-fit: cover; border-top-left-radius: 1rem; border-top-right-radius: 1rem;" />
+                    <% } %>
+
+                      <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                          <h5 class="card-title fw-semibold mb-0">
+                            <%= listing.title %>
+                          </h5>
+                          <span class="badge bg-danger rounded-pill">
+                            <%= listing.country %>
+                          </span>
+                        </div>
+                        <p class="card-text text-muted mb-1">
+                          &#8377; <%= listing.price ? listing.price.toLocaleString("en-IN") : "N/A" %> / night
+                        </p>
+
+                        <p class="card-text small text-muted">
+                          <%= listing.location %>
+                        </p>
+                      </div>
+              </a>
+            </div>
+          </div>
+          <% } %>
+      </div>
+    </div>
+
+    <script src="/js/filterbar.js"></script>
+
+  </body>
