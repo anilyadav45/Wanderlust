@@ -1,3 +1,8 @@
+//from geocoding docs
+const mbxGeocoding = require('@mapbox/mapbox-sdk/services/geocoding');
+const map_token = process.env.MAP_TOKEN;
+const geocodingClient = mbxGeocoding({ accessToken: map_token });
+
 
 //Controllers/listings
 const Listing = require("../models/listing");
@@ -39,9 +44,23 @@ module.exports.showListing = async (req, res) => {
     res.render("listings/show.ejs", { listing });
 };
 
-//post listing 
+//post listing  - create new listing
 module.exports.postListing = async (req, res, next) => {
+
+
     try {
+
+        //for mapbox 
+
+        let response = await geocodingClient.forwardGeocode({
+            query: req.body.listing.location,//query we got form form
+            limit: 1
+        })
+            .send()
+        let coordinates = response.body.features[0].geometry.coordinates;
+        console.log("This is user requested wise coordinates after geocoding api converted plain text to this coordinate", coordinates);
+
+
         // 1️ Upload the file from multer temp folder to Cloudinary
         const cloudUrl = await uploadOnCloudinary(req.file.path);
 
@@ -63,9 +82,11 @@ module.exports.postListing = async (req, res, next) => {
 
 
         newListing.owner = req.user._id;
-
+        //to push or assign user req geometry to db model listing in geometry -- to store
+        newListing.geometry = response.body.features[0].geometry;//storing to db
         //saave to mongodb
-        await newListing.save();
+        let savedListing = await newListing.save();
+        console.log("saved listing", savedListing);
 
         console.log(" Saved listing with Cloudinary image:", newListing);
         req.flash("success", "Successfully created a new listing!");
@@ -82,18 +103,18 @@ module.exports.editListingGet = async (req, res) => {
     let { id } = req.params;
     const listing = await Listing.findById(id);
     let originalUrl = listing.image.url;
-    originalUrl = originalUrl.replace("/upload","/upload/w_250");//reducing img size no need to render full kwality on edit route
-    res.render("listings/edit.ejs", { listing ,originalUrl});
+    originalUrl = originalUrl.replace("/upload", "/upload/w_250");//reducing img size no need to render full kwality on edit route
+    res.render("listings/edit.ejs", { listing, originalUrl });
 };
 
 //edit listing post - put req -actual edit handler
 module.exports.editPutReq = async (req, res) => {
     let { id } = req.params;
     let listing = await Listing.findByIdAndUpdate(id, { ...req.body.listing }, { new: true });
-   
+
     console.log("old listing:", listing);
-    console.log("req.file:",req.file);
-  
+    console.log("req.file:", req.file);
+
 
     // check if file exists (when user uploads new image)
     if (typeof req.file !== 'undefined') {
@@ -101,7 +122,7 @@ module.exports.editPutReq = async (req, res) => {
         const result = await uploadOnCloudinary(req.file.path);
 
         if (result) {
-            console.log("result is : ",result);
+            console.log("result is : ", result);
             listing.image = {
                 url: result,
                 filename: req.file.filename

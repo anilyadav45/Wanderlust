@@ -1,5 +1,12 @@
 <%- layout("/layouts/boilerplate") %>
 
+  <script>
+    //these two for get access in maps.js - directly we can't so need this 
+    const mapToken = "<%= process.env.MAP_TOKEN %>";
+    const coordinates = <%- JSON.stringify(listing.geometry.coordinates) %>;
+
+  </script>
+
   <body>
     <div class="show-container">
       <div class="listing-container">
@@ -8,7 +15,7 @@
           <% } %>
             <div class="listing-username">
               Posted by : <b>
-                <%= listing.owner.username %> 
+                <%= listing.owner.username %>
               </b>
             </div>
             <div class="listing-title">
@@ -81,36 +88,44 @@
                   <% } %>
 
                     <br>
-                    <div class="reviews row">
-                      <p><b>All Reviews</b></p>
-                      <% for(let review of listing.reviews){ %>
-                        <div class="card col-5 mb-3 ms-5">
-                          <div class="card-body review-card">
-                            <h5 class="card-text">
-                              @<%= review.author.username %>
-                            </h5>
+                    <% if(listing.reviews.length> 0){ %>
+                      <div class="reviews row">
+                        <p><b>All Reviews</b></p>
+                        <% for(let review of listing.reviews){ %>
+                          <div class="card col-5 mb-3 ms-5">
+                            <div class="card-body review-card">
+                              <h5 class="card-text">
+                                @<%= review.author.username %>
+                              </h5>
 
-                            <p class="starability-result card-text  fk" data-rating="<%= review.rating %>">
-                            </p>
+                              <p class="starability-result card-text  fk" data-rating="<%= review.rating %>">
+                              </p>
 
 
-                            <p class="card-text">
-                              <%= review.comment %>
-                            </p>
-                            <form method="POST"
-                              action="/listings/<%=listing.id  %>/reviews/<%= review._id %>?_method=DELETE">
-                              <% if(currentUser && currentUser._id.equals(review.author.id)){ %>
-                                <button class="btn btn-danger" type="submit">Delete</button>
-                                <% } %>
-                            </form>
+                              <p class="card-text">
+                                <%= review.comment %>
+                              </p>
+                              <form method="POST"
+                                action="/listings/<%=listing.id  %>/reviews/<%= review._id %>?_method=DELETE">
+                                <% if(currentUser && currentUser._id.equals(review.author.id)){ %>
+                                  <button class="btn btn-danger" type="submit">Delete</button>
+                                  <% } %>
+                              </form>
+                            </div>
                           </div>
+
+
+
+                          <% }%>
+                      </div>
+                      <%}%>
+
+
+                        <div class="show-map">
+                          <h2>You'll be here !</h2>
+                          <div id="map"></div>
                         </div>
-
-
-
-                        <% }%>
-                    </div>
-
       </div>
     </div>
+    <script src="/js/maps.js"></script>
   </body>
