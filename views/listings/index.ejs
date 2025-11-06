@@ -1,6 +1,5 @@
 <% layout("layouts/boilerplate.ejs") %>
-
-  <link rel="stylesheet" href="/css/filterbar.css">
+  
 
   <body style="background-color: #f7f7f7;">
     <div class="container container-fluid filter-container sticky-top">
@@ -55,6 +54,12 @@
             <i class="fa-solid fa-chess-rook"></i>
             <h6>Castles</h6>
           </div>
+
+        </div>
+
+        <div class="form-check form-switch gst-switch-container">
+          <label class="form-check-label" for="flexSwitchCheckDefault">Include GST</label>
+          <input class="form-check-input switch" type="checkbox" role="switch" id="flexSwitchCheckDefault">
         </div>
 
       </div>
@@ -83,13 +88,21 @@
                             <%= listing.country %>
                           </span>
                         </div>
-                        <p class="card-text text-muted mb-1">
-                          &#8377; <%= listing.price ? listing.price.toLocaleString("en-IN") : "N/A" %> / night
+                        <p class="card-text text-muted mb-1 price" data-price="<%= listing.price %>">
+                          ₹ <%= listing.price.toLocaleString("en-IN") %> / night
                         </p>
+
 
                         <p class="card-text small text-muted">
                           <%= listing.location %>
                         </p>
+
+                        <p class="card-text gst-text" style="display: none;">
+                          <i>With +18% GST</i>
+                        </p>
+
+
+
                       </div>
               </a>
             </div>
@@ -101,3 +114,30 @@
     <script src="/js/filterbar.js"></script>
 
   </body>
+
+  <script>
+    let gstSwitch = document.querySelector("#flexSwitchCheckDefault");
+    let gstTexts = document.querySelectorAll(".gst-text");
+    let priceElements = document.querySelectorAll(".price");
+
+    gstSwitch.addEventListener("change", () => {
+
+      // Show/Hide GST Text
+      gstTexts.forEach(text => {
+        text.style.display = gstSwitch.checked ? "block" : "none";
+      });
+
+      // Update Prices
+      priceElements.forEach(priceElement => {
+        let originalPrice = Number(priceElement.dataset.price);
+
+        if (gstSwitch.checked) {
+          let priceWithGst = originalPrice * 1.18;
+          priceElement.innerHTML = `₹ ${priceWithGst.toLocaleString("en-IN", { minimumFractionDigits: 0 })} / night`;
+        } else {
+          priceElement.innerHTML = `₹ ${originalPrice.toLocaleString("en-IN")} / night`;
+        }
+      });
+
+    });
+  </script>

@@ -130,7 +130,6 @@
     white-space: nowrap;
 }
 
-/* Custom styling for the Bootstrap switch to look like Airbnb's */
 .form-switch .form-check-input {
     width: 3.2rem;
     height: 1.8rem;
@@ -197,4 +196,27 @@
 /* Style for the icons within the links */
 .airbnb-nav-item i {
     font-size: 1rem;
+}
+/* gst tax enabler button  */
+.gst-switch-container {
+  display: flex;
+  width: 20rem;
+  height: 5rem;
+  align-items: center;
+  padding: 5px;
+  gap: 60px; /* spacing between text and switch */
+  /* background: #bc2727; */
+  border-radius: 8px;
+  border: 0.5px solid #ddd;
+}
+.gst-switch-container .form-check-input {
+  width: 48px;
+  height: 24px;
+  cursor: pointer;
+  transition: 0.3s ease;
+}
+
+.gst-switch-container .form-check-input:checked {
+  background-color: #ffc107;
+  border-color: #ffc107;
 }
