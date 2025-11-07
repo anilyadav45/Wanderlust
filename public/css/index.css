@@ -1,9 +1,13 @@
-/* Custom Variables for Airbnb Aesthetics */
 :root {
+    /* LivoraStays Navy used for primary dark text/active state */
+    --navy-dark: #212529;
     --gray-dark: #222222;
+    /* Retaining old Airbnb dark for filters */
     --gray-light: #717171;
     --border-color: #dddddd;
     --bg-color: #f7f7f7;
+    /* LivoraStays Coral Pink for accents/active switch */
+    --coral-pink: #FF6F61;
 }
 
 /* ------------------------- */
@@ -14,27 +18,34 @@
     border-radius: 2rem;
     border-bottom: 1px solid var(--border-color);
     padding: 0 4vw;
-    /* Responsive horizontal padding */
     z-index: 1000;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
 }
 
-.filter-scroller {
+/* ------------------------- */
+/* Filter Scroller Wrapper (New for Fixed Button) */
+/* ------------------------- */
+.filter-scroll-wrapper {
     display: flex;
+    width: 100%;
     overflow-x: scroll;
-    /* Enables horizontal scrolling */
     -webkit-overflow-scrolling: touch;
-    /* Smoother scrolling on iOS */
     scrollbar-width: none;
-    /* Hide scrollbar for Firefox */
-    padding: 10px 0;
-    min-height: 80px;
-    /* Ensures space for content */
+    padding-right: 15px;
 }
 
 /* Hide scrollbar for Chrome, Safari, Opera */
-.filter-scroller::-webkit-scrollbar {
+.filter-scroll-wrapper::-webkit-scrollbar {
     display: none;
+}
+
+.filter-scroller {
+    /* Retaining original filter-scroller styles for inner content */
+    display: flex;
+    padding: 10px 0;
+    min-height: 80px;
+    flex-shrink: 0;
+    flex-grow: 1;
 }
 
 /* ------------------------- */
@@ -52,7 +63,6 @@
     transition: color 0.2s, border-bottom 0.2s;
     color: var(--gray-light);
     border-bottom: 2px solid transparent;
-    /* The placeholder for the active line */
     text-align: center;
     border-radius: 1.5rem;
 }
@@ -60,7 +70,6 @@
 
 .filter-item:hover {
     color: var(--gray-dark);
-    /* border: 1px solid var(--gray-light); */
     opacity: 0.7;
     background-color: var(--bg-color);
 
@@ -69,7 +78,6 @@
 .filter-item.active {
     color: var(--gray-dark);
     border-bottom: 2px solid var(--gray-dark);
-    /* Black line when active */
 }
 
 .filter-item i {
@@ -79,16 +87,14 @@
 
 .filter-item h6 {
     font-size: 0.75rem;
-    /* Smaller, clearer text */
     font-weight: 500;
     margin: 0;
     white-space: nowrap;
 }
 
 /* ------------------------- */
-/* Filters Button Style */
+/* Filters Button Style (Filter Group - Currently unused in EJS, but kept) */
 /* ------------------------- */
-
 .filter-group {
     border: 1px solid var(--border-color);
     border-radius: 12px;
@@ -103,120 +109,88 @@
     align-items: center;
     white-space: nowrap;
     flex-shrink: 0;
-    /* Prevents this button from shrinking */
 }
 
 .filter-group:hover {
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
-/* ------------------------- */
-/* Tax Toggle Switch */
-/* ------------------------- */
-.tax-toggle-box {
+/* ------------------------------------- */
+/* GST/Price Toggle Switch (Fixed & Branded) */
+/* ------------------------------------- */
+
+.price-toggle {
+    /* Positioning to stick to the right edge */
+    position: sticky;
+    right: 0;
+    z-index: 1001;
+
+    /* Styling */
     display: flex;
     align-items: center;
-    padding: 12px 20px;
-    border-left: 1px solid var(--border-color);
-    margin-left: 20px;
-    min-width: 250px;
-    flex-shrink: 0;
-}
-
-.toggle-text {
-    font-size: 0.9rem;
-    font-weight: 500;
-    margin-right: 15px;
     white-space: nowrap;
+    font-size: 0.9rem;
+    flex-shrink: 0;
+
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 10px 18px;
+    margin-left: 20px;
+
+    /* Crucial for covering the scrolling filters */
+    background-color: white;
+    box-shadow: -5px 0 10px rgba(0, 0, 0, 0.05);
 }
 
-.form-switch .form-check-input {
-    width: 3.2rem;
-    height: 1.8rem;
-    border-radius: 50em;
-    cursor: pointer;
+/* Customizing the Switch appearance */
+.price-toggle .form-check-input {
+    width: 2.2rem;
+    height: 1.25rem;
+    box-shadow: none !important;
     background-color: var(--gray-light);
     border-color: var(--gray-light);
-    box-shadow: none;
+    cursor: pointer;
+    transition: background-color 0.3s, border-color 0.3s;
 }
 
-.form-switch .form-check-input:checked {
-    background-color: var(--gray-dark);
-    /* Dark grey when ON */
-    border-color: var(--gray-dark);
+.price-toggle .form-check-input:checked {
+    /* Uses Coral Pink for the 'on' state */
+    background-color: var(--coral-pink);
+    border-color: var(--coral-pink);
 }
 
-/* for navbar of home experence and services */
-/* This assumes Font Awesome is loaded. 
-    It styles the navigation items to resemble Airbnb's rounded, interactive buttons.
-*/
-
-/* --- Navbar Container Adjustments --- */
-.navbar-nav {
-    /* Ensures the list items are well-spaced */
-    gap: 0.5rem;
+.price-toggle .fw-bold {
+    /* Color the "GST Incl." text */
+    color: var(--coral-pink) !important;
 }
 
-/* --- Individual Navigation Item Styling --- */
-.airbnb-nav-item {
-    /* Reset Bootstrap padding to apply custom spacing */
-    padding: 8px 15px !important;
+/* ------------------------------------- */
+/* Mobile Responsiveness (Ensures visibility) */
+/* ------------------------------------- */
+@media (max-width: 768px) {
+    .filter-container {
+        padding: 0 1vw;
+        /* Reduced padding on small screens */
+    }
 
-    /* Make the link look like a rounded pill button */
-    border: 1px solid transparent;
-    border-radius: 20px;
+    .price-toggle {
+        font-size: 0.75rem;
+        padding: 6px 10px !important;
+        margin-left: 10px;
+        right: 0;
+        /* Ensures it sits on the very edge */
+    }
 
-    /* Subtle background and text color adjustments */
-    background-color: transparent;
-    color: #222222 !important;
-    font-weight: 500 !important;
-    font-size: 0.95rem;
+    /* Hides the longer labels on small screens to save space */
+    .price-toggle .form-check-label,
+    .price-toggle .text-muted {
+        display: none !important;
+    }
 
-    /* Enable the smooth transition for the hover effect */
-    transition: background-color 0.2s ease, transform 0.15s ease;
-
-    /* Ensure the icon and text are aligned nicely */
-    display: flex;
-    align-items: center;
+    .filter-item {
+        min-width: 80px;
+        margin: 0 5px;
+    }
 }
 
-.airbnb-nav-item:hover {
-    /* The key Airbnb-style hover effects: */
-
-    /* 1. Slight scale/shrink effect */
-    transform: scale(0.98);
-
-    /* 2. Background color change */
-    background-color: #f7f7f7;
-
-    /* 3. Subtle shadow if you want more depth (optional) */
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
-}
-
-/* Style for the icons within the links */
-.airbnb-nav-item i {
-    font-size: 1rem;
-}
-/* gst tax enabler button  */
-.gst-switch-container {
-  display: flex;
-  width: 20rem;
-  height: 5rem;
-  align-items: center;
-  padding: 5px;
-  gap: 60px; /* spacing between text and switch */
-  /* background: #bc2727; */
-  border-radius: 8px;
-  border: 0.5px solid #ddd;
-}
-.gst-switch-container .form-check-input {
-  width: 48px;
-  height: 24px;
-  cursor: pointer;
-  transition: 0.3s ease;
-}
-
-.gst-switch-container .form-check-input:checked {
-  background-color: #ff0707;
-  border-color: #ff0717;
-}
+/* Note: All old conflicting styles (tax-toggle-box, gst-switch-container) have been removed. */

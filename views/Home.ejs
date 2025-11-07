@@ -1,0 +1,88 @@
+<%- layout("/layouts/boilerplate") %>
+
+    <style>
+        /* --- BRAND COLORS --- */
+        /* Coral Pink: #FF6F61 */
+        /* Midnight Navy: #212529 */
+        /* White: #FFFFFF */
+
+        /* Removes gradient and sets a clean white background */
+        .hero-section {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            text-align: center;
+            padding-top: 80px;
+
+            /* Clean, bright background */
+            background-color: white;
+
+            /* Text color for contrast on white */
+            color: #212529;
+            /* Midnight Navy for primary text */
+        }
+
+        /* Gradient animation is removed as it's not needed for a flat background */
+        /* @keyframes gradientMove is now unused */
+
+        .hero-title {
+            font-size: 3.8rem;
+            /* Larger and more impactful */
+            font-weight: 800;
+            /* Extra bold */
+            text-shadow: none;
+            /* Removed heavy shadow */
+            color: #212529;
+            /* Midnight Navy */
+        }
+
+        .hero-text {
+            font-size: 1.4rem;
+            /* Clear, readable secondary text */
+            margin-top: 15px;
+            opacity: 0.95;
+            font-weight: 300;
+            max-width: 700px;
+            line-height: 1.5;
+        }
+
+        .hero-btn {
+            margin-top: 40px;
+            padding: 14px 40px;
+            font-size: 1.2rem;
+            border-radius: 8px;
+            /* Slightly squarer for a modern look */
+            transition: 0.3s ease;
+            text-decoration: none;
+
+            /* Brand-focused button styling */
+            background-color: #FF6F61;
+            /* Coral Pink */
+            color: white;
+            /* White text for high contrast */
+            border: 2px solid #FF6F61;
+            font-weight: 600;
+            box-shadow: 0 4px 15px rgba(255, 111, 97, 0.4);
+            /* Soft Coral shadow */
+        }
+
+        /* Subtle lift and glow on hover */
+        .hero-btn:hover {
+            transform: translateY(-2px);
+            background-color: #FF8F81;
+            /* Slightly lighter pink */
+            border-color: #FF8F81;
+            box-shadow: 0 6px 20px rgba(255, 111, 97, 0.6);
+        }
+    </style>
+
+    <div class="hero-section">
+        <h1 class="hero-title">Stay. Host. Earn.</h1>
+        <p class="hero-text">
+            Find beautiful stays anywhere — or share your own space and get paid.
+            LivoraStays makes travel simple and hosting effortless.
+        </p>
+        <a href="/listings" class="hero-btn">Start Exploring</a>
+    </div>

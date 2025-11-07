@@ -1,11 +1,11 @@
 <% layout("layouts/boilerplate.ejs") %>
-  
 
-  <body style="background-color: #f7f7f7;">
-    <div class="container container-fluid filter-container sticky-top">
-      <div class="d-flex justify-content-start align-items-center">
+<body style="background-color: #f7f7f7;">
+  <div class="container container-fluid filter-container sticky-top">
+    <div class="d-flex justify-content-start align-items-center">
 
-        <div class="filter-scroller me-auto">
+      <div class="filter-scroll-wrapper">
+        <div class="filter-scroller">
           <div class="filter-item active" data-filter="trending">
             <i class="fa-solid fa-fire"></i>
             <h6>Trendings</h6>
@@ -54,90 +54,95 @@
             <i class="fa-solid fa-chess-rook"></i>
             <h6>Castles</h6>
           </div>
-
         </div>
+      </div>
+      <div class="d-flex align-items-center price-toggle">
+        <label class="form-check-label me-2 small fw-semibold d-none d-sm-block" for="flexSwitchCheckDefault">Display Price:</label>
+        <span class="small me-2 text-muted d-none d-sm-block">Base</span> 
 
-        <div class="form-check form-switch gst-switch-container">
-          <label class="form-check-label" for="flexSwitchCheckDefault">Include GST</label>
+        <div class="form-check form-switch m-0">
           <input class="form-check-input switch" type="checkbox" role="switch" id="flexSwitchCheckDefault">
         </div>
-
+        
+        <span class="small ms-2 fw-bold">GST Incl.</span>
       </div>
-    </div>
 
-    <div class="container mt-4">
-      <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
-        <% for(let listing of allListings) { %>
-          <div class="col">
-            <div class="card h-100 shadow-sm border-0 rounded-4">
-              <a href="/listings/<%= listing._id %>" class="text-decoration-none text-dark">
-                <% if (listing.image && listing.image.url) { %>
-                  <img src="<%- listing.image.url %>" class="card-img-top" alt="listing image"
+    </div>
+  </div>
+
+  <div class="container mt-4">
+    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
+      <% for(let listing of allListings) { %>
+        <div class="col">
+          <div class="card h-100 shadow-sm border-0 rounded-4">
+            <a href="/listings/<%= listing._id %>" class="text-decoration-none text-dark">
+              <% if (listing.image && listing.image.url) { %>
+                <img src="<%- listing.image.url %>" class="card-img-top" alt="listing image"
+                  style="height: 250px; object-fit: cover; border-top-left-radius: 1rem; border-top-right-radius: 1rem;" />
+                <% } else { %>
+                  <img src="https://via.placeholder.com/350x250?text=No+Image" class="card-img-top" alt="no image"
                     style="height: 250px; object-fit: cover; border-top-left-radius: 1rem; border-top-right-radius: 1rem;" />
-                  <% } else { %>
-                    <img src="https://via.placeholder.com/350x250?text=No+Image" class="card-img-top" alt="no image"
-                      style="height: 250px; object-fit: cover; border-top-left-radius: 1rem; border-top-right-radius: 1rem;" />
-                    <% } %>
+                  <% } %>
 
-                      <div class="card-body">
-                        <div class="d-flex justify-content-between align-items-center mb-2">
-                          <h5 class="card-title fw-semibold mb-0">
-                            <%= listing.title %>
-                          </h5>
-                          <span class="badge bg-danger rounded-pill">
-                            <%= listing.country %>
-                          </span>
-                        </div>
-                        <p class="card-text text-muted mb-1 price" data-price="<%= listing.price %>">
-                          ₹ <%= listing.price.toLocaleString("en-IN") %> / night
-                        </p>
-
-
-                        <p class="card-text small text-muted">
-                          <%= listing.location %>
-                        </p>
-
-                        <p class="card-text gst-text" style="display: none;">
-                          <i>With +18% GST</i>
-                        </p>
-
-
-
+                    <div class="card-body">
+                      <div class="d-flex justify-content-between align-items-center mb-2">
+                        <h5 class="card-title fw-semibold mb-0">
+                          <%= listing.title %>
+                        </h5>
+                        <span class="badge bg-danger rounded-pill">
+                          <%= listing.country %>
+                        </span>
                       </div>
-              </a>
-            </div>
+                      <p class="card-text text-muted mb-1 price" data-price="<%= listing.price %>">
+                        ₹ <%= listing.price.toLocaleString("en-IN") %> / night
+                      </p>
+
+
+                      <p class="card-text small text-muted">
+                        <%= listing.location %>
+                      </p>
+
+                      <p class="card-text gst-text" style="display: none;">
+                        <i>With +18% GST</i>
+                      </p>
+
+
+
+                    </div>
+            </a>
           </div>
-          <% } %>
-      </div>
+        </div>
+        <% } %>
     </div>
+  </div>
 
-    <script src="/js/filterbar.js"></script>
+  <script src="/js/filterbar.js"></script>
 
-  </body>
+</body>
 
-  <script>
-    let gstSwitch = document.querySelector("#flexSwitchCheckDefault");
-    let gstTexts = document.querySelectorAll(".gst-text");
-    let priceElements = document.querySelectorAll(".price");
+<script>
+  let gstSwitch = document.querySelector("#flexSwitchCheckDefault");
+  let gstTexts = document.querySelectorAll(".gst-text");
+  let priceElements = document.querySelectorAll(".price");
 
-    gstSwitch.addEventListener("change", () => {
+  gstSwitch.addEventListener("change", () => {
 
-      // Show/Hide GST Text
-      gstTexts.forEach(text => {
-        text.style.display = gstSwitch.checked ? "block" : "none";
-      });
-
-      // Update Prices
-      priceElements.forEach(priceElement => {
-        let originalPrice = Number(priceElement.dataset.price);
-
-        if (gstSwitch.checked) {
-          let priceWithGst = originalPrice * 1.18;
-          priceElement.innerHTML = `₹ ${priceWithGst.toLocaleString("en-IN", { minimumFractionDigits: 0 })} / night`;
-        } else {
-          priceElement.innerHTML = `₹ ${originalPrice.toLocaleString("en-IN")} / night`;
-        }
-      });
-
+    // Show/Hide GST Text
+    gstTexts.forEach(text => {
+      text.style.display = gstSwitch.checked ? "block" : "none";
     });
-  </script>
+
+    // Update Prices
+    priceElements.forEach(priceElement => {
+      let originalPrice = Number(priceElement.dataset.price);
+
+      if (gstSwitch.checked) {
+        let priceWithGst = originalPrice * 1.18;
+        priceElement.innerHTML = `₹ ${priceWithGst.toLocaleString("en-IN", { minimumFractionDigits: 0 })} / night`;
+      } else {
+        priceElement.innerHTML = `₹ ${originalPrice.toLocaleString("en-IN")} / night`;
+      }
+    });
+
+  });
+</script>
