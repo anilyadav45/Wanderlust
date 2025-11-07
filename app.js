@@ -14,6 +14,7 @@ const listingRouter = require("./routes/listingRouter.js");
 const reviewRouter = require("./routes/reviewRouter.js");
 const userRouter = require("./routes/userRouter.js");
 //sesssion require
+const MongoStore = require('connect-mongo');
 const session = require('express-session');
 const connectFlash = require('connect-flash');
 //for user authentication -- use after session
@@ -21,8 +22,22 @@ const passport = require('passport');
 const localStrategy = require('passport-local');
 const User = require('./models/user.js');
 
+//for connect mongo 
+const store = MongoStore.create({
+  mongoUrl: dbUrl,
+  crypto: {
+    secret: process.env.SECRET,
+  },
+  touchAfter: 24 * 3600 // time period in seconds
+});
+
+store.on('error', () => {
+  console.log("error in mongo session " + err);
+})
+
 const sessionOptions = {//it help eg after login we can access the different tabs without login again and again so it used in passport also 
-  secret: 'keyboard cat',
+  store,
+  secret: process.env.SECRET,
   resave: false,
   saveUninitialized: true,
   cookie: {
@@ -31,6 +46,7 @@ const sessionOptions = {//it help eg after login we can access the different tab
     httpOnly: true
   }
 }
+
 
 
 //using session middleware
