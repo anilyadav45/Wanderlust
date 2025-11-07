@@ -1,8 +1,10 @@
 <nav class="navbar navbar-expand-lg bg-white shadow-sm sticky-top py-3">
   <div class="container-fluid px-4">
     <!-- Logo / Brand -->
-    <a class="navbar-brand fw-bold  fs-4" href="/listings"><i class="fa-regular fa-compass"></i>
-      <span>GOyatra</span></a>
+    <a class="navbar-brand fw-bold fs-4 d-flex align-items-center" href="/listings">
+      <img src="/assets/livora-logo.png" class="brand-logo">
+    </a>
+
 
     <!-- Toggler -->
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
@@ -56,7 +58,7 @@
           <% } %>
             <% if(currentUser){ %>
               <li class="nav-item">
-                <a class="nav-link text-dark fw-semibold px-3" href="/listings/new">Airbnb Your Home</a>
+                <a class="nav-link text-dark fw-semibold px-3" href="/listings/new">Host with Livora</a>
               </li>
 
               <li class="nav-item">

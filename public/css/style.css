@@ -13,10 +13,16 @@
   font-size: 2rem;
 }
 
-.navbar-brand span {
-  font-size: 2rem;
-  letter-spacing: 1px;
+.brand-logo {
+  height: 78px;
+  border-radius: 10px;
+  /* same size vibe as Font Awesome icon */
+  width: auto;
+  object-fit: contain;
+  margin-top: -2px;
+  /* slight vertical align fix (optional) */
 }
+
 
 /* cards styleingh  */
 .card:hover {
