@@ -2,7 +2,7 @@
 
   <body>
     <div class="edit-container ">
-      <h2>Edit Your Listing</h2>
+      <h2>Edit Your Home</h2>
 
       <form method="POST" action="/listings/<%= listing._id %>?_method=PUT" class="edit-form"
         enctype="multipart/form-data">
@@ -23,7 +23,7 @@
 
         <input name="listing[location]" value="<%= listing.location %>" type="text" placeholder="Location" />
 
-        <button type="submit">Update Listing</button>
+        <button type="submit">Update</button>
       </form>
     </div>
   </body>
