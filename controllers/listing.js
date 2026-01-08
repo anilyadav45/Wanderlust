@@ -9,14 +9,35 @@ const Listing = require("../models/listing");
 const { uploadOnCloudinary } = require("../utils/cloudinary.js");
 
 //listing index route
+// module.exports.index = async (req, res) => {
+//     try {
+//         const allListings = await Listing.find({});
+//         res.render("listings/index.ejs", { allListings });
+//     } catch (err) {
+//         res.redirect("/error");
+//     }
+// }
+
 module.exports.index = async (req, res) => {
-    try {
-        const allListings = await Listing.find({});
-        res.render("listings/index.ejs", { allListings });
-    } catch (err) {
-        res.redirect("/error");
-    }
-}
+  const { search } = req.query;
+
+  let query = {};
+
+  if (search) {
+    query = {
+      $or: [
+        { title: { $regex: search, $options: "i" } },
+        { location: { $regex: search, $options: "i" } },
+        { country: { $regex: search, $options: "i" } }
+      ]
+    };
+  }
+
+  const allListings = await Listing.find(query);
+  res.render("listings/index.ejs", { allListings, search });
+};
+
+
 //new route
 module.exports.renderNewRoute = (req, res) => {
     res.render("listings/new.ejs");

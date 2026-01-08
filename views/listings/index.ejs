@@ -1,148 +1,155 @@
 <% layout("layouts/boilerplate.ejs") %>
 
-<body style="background-color: #f7f7f7;">
-  <div class="container container-fluid filter-container sticky-top">
-    <div class="d-flex justify-content-start align-items-center">
+  <body style="background-color: #f7f7f7;">
+    <div class="container container-fluid filter-container sticky-top">
+      <div class="d-flex justify-content-start align-items-center">
 
-      <div class="filter-scroll-wrapper">
-        <div class="filter-scroller">
-          <div class="filter-item active" data-filter="trending">
-            <i class="fa-solid fa-fire"></i>
-            <h6>Trendings</h6>
-          </div>
-          <div class="filter-item" data-filter="rooms">
-            <i class="fa-solid fa-bed"></i>
-            <h6>Rooms</h6>
-          </div>
-          <div class="filter-item" data-filter="cities">
-            <i class="fa-solid fa-city"></i>
-            <h6>Iconic Cities</h6>
-          </div>
-          <div class="filter-item" data-filter="mountains">
-            <i class="fa-solid fa-mountain-sun"></i>
-            <h6>Mountains</h6>
-          </div>
-          <div class="filter-item" data-filter="pools">
-            <i class="fa-solid fa-water-ladder"></i>
-            <h6>Amazing Pools</h6>
-          </div>
-          <div class="filter-item" data-filter="cabins">
-            <i class="fa-solid fa-house-chimney-window"></i>
-            <h6>Tiny Cabins</h6>
-          </div>
-          <div class="filter-item" data-filter="beachfront">
-            <i class="fa-solid fa-umbrella-beach"></i>
-            <h6>Beachfront</h6>
-          </div>
-          <div class="filter-item" data-filter="lakeside">
-            <i class="fa-solid fa-sailboat"></i>
-            <h6>Lakeside</h6>
-          </div>
-          <div class="filter-item" data-filter="skiing">
-            <i class="fa-solid fa-person-skiing"></i>
-            <h6>Skiing</h6>
-          </div>
-          <div class="filter-item" data-filter="camping">
-            <i class="fa-solid fa-campground"></i>
-            <h6>Camping</h6>
-          </div>
-          <div class="filter-item" data-filter="domes">
-            <i class="fa-solid fa-igloo"></i>
-            <h6>Domes</h6>
-          </div>
-          <div class="filter-item" data-filter="castles">
-            <i class="fa-solid fa-chess-rook"></i>
-            <h6>Castles</h6>
+        <div class="filter-scroll-wrapper">
+          <div class="filter-scroller">
+            <div class="filter-item active" data-filter="trending">
+              <i class="fa-solid fa-fire"></i>
+              <h6>Trendings</h6>
+            </div>
+            <div class="filter-item" data-filter="rooms">
+              <i class="fa-solid fa-bed"></i>
+              <h6>Rooms</h6>
+            </div>
+            <div class="filter-item" data-filter="cities">
+              <i class="fa-solid fa-city"></i>
+              <h6>Iconic Cities</h6>
+            </div>
+            <div class="filter-item" data-filter="mountains">
+              <i class="fa-solid fa-mountain-sun"></i>
+              <h6>Mountains</h6>
+            </div>
+            <div class="filter-item" data-filter="pools">
+              <i class="fa-solid fa-water-ladder"></i>
+              <h6>Amazing Pools</h6>
+            </div>
+            <div class="filter-item" data-filter="cabins">
+              <i class="fa-solid fa-house-chimney-window"></i>
+              <h6>Tiny Cabins</h6>
+            </div>
+            <div class="filter-item" data-filter="beachfront">
+              <i class="fa-solid fa-umbrella-beach"></i>
+              <h6>Beachfront</h6>
+            </div>
+            <div class="filter-item" data-filter="lakeside">
+              <i class="fa-solid fa-sailboat"></i>
+              <h6>Lakeside</h6>
+            </div>
+            <div class="filter-item" data-filter="skiing">
+              <i class="fa-solid fa-person-skiing"></i>
+              <h6>Skiing</h6>
+            </div>
+            <div class="filter-item" data-filter="camping">
+              <i class="fa-solid fa-campground"></i>
+              <h6>Camping</h6>
+            </div>
+            <div class="filter-item" data-filter="domes">
+              <i class="fa-solid fa-igloo"></i>
+              <h6>Domes</h6>
+            </div>
+            <div class="filter-item" data-filter="castles">
+              <i class="fa-solid fa-chess-rook"></i>
+              <h6>Castles</h6>
+            </div>
           </div>
         </div>
+        <div class="d-flex align-items-center price-toggle">
+          <label class="form-check-label me-2 small fw-semibold d-none d-sm-block" for="flexSwitchCheckDefault">Display
+            Price:</label>
+          <span class="small me-2 text-muted d-none d-sm-block">Base</span>
+
+          <div class="form-check form-switch m-0">
+            <input class="form-check-input switch" type="checkbox" role="switch" id="flexSwitchCheckDefault">
+          </div>
+
+          <span class="small ms-2 fw-bold">GST Incl.</span>
+        </div>
+
       </div>
-      <div class="d-flex align-items-center price-toggle">
-        <label class="form-check-label me-2 small fw-semibold d-none d-sm-block" for="flexSwitchCheckDefault">Display Price:</label>
-        <span class="small me-2 text-muted d-none d-sm-block">Base</span> 
+    </div>
 
-        <div class="form-check form-switch m-0">
-          <input class="form-check-input switch" type="checkbox" role="switch" id="flexSwitchCheckDefault">
-        </div>
-        
-        <span class="small ms-2 fw-bold">GST Incl.</span>
+    <div class="container mt-4">
+      <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
+        <% if (allListings.length===0) { %>
+          <p class="text-center mt-4 text-muted">
+            No stays found for "<%= search %>"
+          </p>
+          <% } %>
+
+            <% for(let listing of allListings) { %>
+              <div class="col">
+                <div class="card h-100 shadow-sm border-0 rounded-4">
+                  <a href="/listings/<%= listing._id %>" class="text-decoration-none text-dark">
+                    <% if (listing.image && listing.image.url) { %>
+                      <img src="<%- listing.image.url %>" class="card-img-top" alt="listing image"
+                        style="height: 250px; object-fit: cover; border-top-left-radius: 1rem; border-top-right-radius: 1rem;" />
+                      <% } else { %>
+                        <img src="https://via.placeholder.com/350x250?text=No+Image" class="card-img-top" alt="no image"
+                          style="height: 250px; object-fit: cover; border-top-left-radius: 1rem; border-top-right-radius: 1rem;" />
+                        <% } %>
+
+                          <div class="card-body">
+                            <div class="d-flex justify-content-between align-items-center mb-2">
+                              <h5 class="card-title fw-semibold mb-0">
+                                <%= listing.title %>
+                              </h5>
+                              <span class="badge bg-danger rounded-pill">
+                                <%= listing.country %>
+                              </span>
+                            </div>
+                            <p class="card-text text-muted mb-1 price" data-price="<%= listing.price %>">
+                              ₹ <%= listing.price.toLocaleString("en-IN") %> / night
+                            </p>
+
+
+                            <p class="card-text small text-muted">
+                              <%= listing.location %>
+                            </p>
+
+                            <p class="card-text gst-text" style="display: none;">
+                              <i>With +18% GST</i>
+                            </p>
+
+
+
+                          </div>
+                  </a>
+                </div>
+              </div>
+              <% } %>
       </div>
-
     </div>
-  </div>
 
-  <div class="container mt-4">
-    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
-      <% for(let listing of allListings) { %>
-        <div class="col">
-          <div class="card h-100 shadow-sm border-0 rounded-4">
-            <a href="/listings/<%= listing._id %>" class="text-decoration-none text-dark">
-              <% if (listing.image && listing.image.url) { %>
-                <img src="<%- listing.image.url %>" class="card-img-top" alt="listing image"
-                  style="height: 250px; object-fit: cover; border-top-left-radius: 1rem; border-top-right-radius: 1rem;" />
-                <% } else { %>
-                  <img src="https://via.placeholder.com/350x250?text=No+Image" class="card-img-top" alt="no image"
-                    style="height: 250px; object-fit: cover; border-top-left-radius: 1rem; border-top-right-radius: 1rem;" />
-                  <% } %>
+    <script src="/js/filterbar.js"></script>
 
-                    <div class="card-body">
-                      <div class="d-flex justify-content-between align-items-center mb-2">
-                        <h5 class="card-title fw-semibold mb-0">
-                          <%= listing.title %>
-                        </h5>
-                        <span class="badge bg-danger rounded-pill">
-                          <%= listing.country %>
-                        </span>
-                      </div>
-                      <p class="card-text text-muted mb-1 price" data-price="<%= listing.price %>">
-                        ₹ <%= listing.price.toLocaleString("en-IN") %> / night
-                      </p>
+  </body>
 
+  <script>
+    let gstSwitch = document.querySelector("#flexSwitchCheckDefault");
+    let gstTexts = document.querySelectorAll(".gst-text");
+    let priceElements = document.querySelectorAll(".price");
 
-                      <p class="card-text small text-muted">
-                        <%= listing.location %>
-                      </p>
+    gstSwitch.addEventListener("change", () => {
 
-                      <p class="card-text gst-text" style="display: none;">
-                        <i>With +18% GST</i>
-                      </p>
+      // Show/Hide GST Text
+      gstTexts.forEach(text => {
+        text.style.display = gstSwitch.checked ? "block" : "none";
+      });
 
+      // Update Prices
+      priceElements.forEach(priceElement => {
+        let originalPrice = Number(priceElement.dataset.price);
 
+        if (gstSwitch.checked) {
+          let priceWithGst = originalPrice * 1.18;
+          priceElement.innerHTML = `₹ ${priceWithGst.toLocaleString("en-IN", { minimumFractionDigits: 0 })} / night`;
+        } else {
+          priceElement.innerHTML = `₹ ${originalPrice.toLocaleString("en-IN")} / night`;
+        }
+      });
 
-                    </div>
-            </a>
-          </div>
-        </div>
-        <% } %>
-    </div>
-  </div>
-
-  <script src="/js/filterbar.js"></script>
-
-</body>
-
-<script>
-  let gstSwitch = document.querySelector("#flexSwitchCheckDefault");
-  let gstTexts = document.querySelectorAll(".gst-text");
-  let priceElements = document.querySelectorAll(".price");
-
-  gstSwitch.addEventListener("change", () => {
-
-    // Show/Hide GST Text
-    gstTexts.forEach(text => {
-      text.style.display = gstSwitch.checked ? "block" : "none";
     });
-
-    // Update Prices
-    priceElements.forEach(priceElement => {
-      let originalPrice = Number(priceElement.dataset.price);
-
-      if (gstSwitch.checked) {
-        let priceWithGst = originalPrice * 1.18;
-        priceElement.innerHTML = `₹ ${priceWithGst.toLocaleString("en-IN", { minimumFractionDigits: 0 })} / night`;
-      } else {
-        priceElement.innerHTML = `₹ ${originalPrice.toLocaleString("en-IN")} / night`;
-      }
-    });
-
-  });
-</script>
+  </script>

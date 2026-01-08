@@ -33,14 +33,18 @@
             <i class="fa-solid fa-concierge-bell me-1"></i>Services
           </a>
         </li>
+
         <li class="nav-item">
-          <form class="form-inline my-2 my-lg-0">
-            <input class="form-control mr-sm-2" type="search" placeholder="Search Destination" aria-label="Search">
+          <form class="d-flex" action="/listings" method="GET">
+            <input class="form-control me-2" type="search" name="search" placeholder="Search destination..."
+              value="<%= typeof search !== 'undefined' ? search : '' %>" />
+            <button class="btn btn-outline-danger" type="submit">
+              Search
+            </button>
           </form>
         </li>
-        <li class="nav-item">
-          <button class="btn btn-search btn-outline-danger my-2 my-sm-0" type="submit">Search</button>
-        </li>
+
+
       </ul>
     </div>
     <!-- for logins and signups  -->
